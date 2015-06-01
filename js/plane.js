@@ -78,5 +78,6 @@ function Plane(plane){
 		
 		this.speed = this.direction.roll.clone().multiply(this.throttle);
 		this.position = this.position.add(this.speed);
+		this.plane.position = this.position;
 	};
 };
