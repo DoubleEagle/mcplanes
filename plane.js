@@ -17,46 +17,49 @@ function plane(){
 		v2 = t2;
 	};
 	
+	this.pressed = [];
+	
+	$(document).keydown(function(e){
+		this.pressed[e.which] = true;
+	});
+	$(document).keyup(function(e){
+		this.pressed[e.which] = false;
+	});
+	
 	this.step = function(){
-		this.position = this.position + this.speed;
+		//attitude
+		//yaw
+		if(this.pressed[68]){
+			rotate(this.direction.roll, this.direction.pitch, .1);
+		};
+		if(this.pressed[65]){
+			rotate(this.direction.roll, this.direction.pitch, -.1);
+		};
+		//pitch
+		if(this.pressed[87]){
+			rotate(this.direction.roll, this.direction.yaw, .1);
+		};
+		if(this.pressed[83]){
+			rotate(this.direction.roll, this.direction.yaw, -.1);
+		};
+		//roll
+		if(this.pressed[69]){
+			rotate(this.direction.pitch, this.direction.yaw, .1);
+		};
+		if(this.pressed[81]){
+			rotate(this.direction.pitch, this.direction.yaw, -.1);
+		};
 		
-		$(document).keydown(function(e){
-			
-			//attitude
-			//yaw
-			if(e.which == 68){
-				rotate(this.direction.roll, this.direction.pitch, .1);
+		//throttle
+		if(this.pressed[16]){
+			if(this.throttle < 100){
+				this.throttle += 1;
 			};
-			if(e.which == 65){
-				rotate(this.direction.roll, this.direction.pitch, -.1);
+		};
+		if(this.pressed[17]){
+			if(this.throttle > 0){
+				this.throttle -= 1;
 			};
-			//pitch
-			if(e.which == 87){
-				rotate(this.direction.roll, this.direction.yaw, .1);
-			};
-			if(e.which == 83){
-				rotate(this.direction.roll, this.direction.yaw, -.1);
-			};
-			//roll
-			if(e.which == 69){
-				rotate(this.direction.pitch, this.direction.yaw, .1);
-			};
-			if(e.which == 81){
-				rotate(this.direction.pitch, this.direction.yaw, -.1);
-			};
-			
-			//throttle
-			if(e.which == 16){
-				if(this.throttle < 100){
-					this.throttle += 1;
-				};
-			};
-			if(e.which == 17){
-				if(this.throttle > 0){
-					this.throttle -= 1;
-				};
-			};
-			
-		});	
+		};
 	};
 };
