@@ -6,8 +6,12 @@ function Plane(plane){
 		roll: new Vector(0,1,0),
 		yaw: new Vector(0,0,1)
 	};
+	this.direction.pitch.name = 'pitch';
+	this.direction.roll.name = 'roll';
+	this.direction.yaw.name = 'yaw';
 	this.throttle = 0;
 	this.plane = plane;
+	this.origGeom = plane.geometry.clone();
 	
 	function rotate(v1, v2, angle){
 		t1 = v1.clone();
@@ -26,7 +30,7 @@ function Plane(plane){
 	},this));
 	
 	this.step = function(){
-		console.log(this.direction.pitch, this.direction.roll, this.direction.yaw);
+		
 		//pitch
 		if(this.pressed[87]){
 			rotate(this.direction.roll, this.direction.yaw, .1);
@@ -63,13 +67,16 @@ function Plane(plane){
 			};
 		};
 		
-		matrix = new THREE.Matrix3();
+		matrix = new THREE.Matrix4();
 		
-		matrix.set(this.direction.pitch.x, this.direction.roll.x, this.direction.yaw.x, this.direction.pitch.y, this.direction.roll.y, this.direction.yaw.y, this.direction.pitch.z, this.direction.roll.z, this.direction.yaw.z);
+		matrix.set(this.direction.pitch.x, this.direction.roll.x, this.direction.yaw.x, 0, this.direction.pitch.y, this.direction.roll.y, this.direction.yaw.y, 0, this.direction.pitch.z, this.direction.roll.z, this.direction.yaw.z, 0, 0, 0, 0, 1);
 		
-		//this.plane.geometry.applyMatrix(matrix);
+		console.log(1);
+		this.plane.geometry.vertices = this.origGeom.clone().vertices;
+		this.plane.geometry.applyMatrix(matrix);
+		this.plane.geometry.verticesNeedUpdate = true;
 		
-		this.speed = this.direction.roll.multiply(this.throttle);
+		this.speed = this.direction.roll.clone().multiply(this.throttle);
 		this.position = this.position.add(this.speed);
 	};
 };

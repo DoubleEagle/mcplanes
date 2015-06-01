@@ -21,7 +21,7 @@ function Manager(){
 	camera.rotation.z = Math.PI;
 	camera.position.z = 10;
 	
-	this.load('models/plane02.json', 
+	this.load('models/plane01.json', 
 		$.proxy(function(plane){
 			this.plane = new Plane(plane);
 		}, this)

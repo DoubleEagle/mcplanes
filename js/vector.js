@@ -15,9 +15,9 @@ function Vector(x,y,z){
 	};
 	
 	function multiply(n){
-		this.x = this.x * n;
-		this.y = this.y * n;
-		this.z = this.z * n;
+		this.x *= n;
+		this.y *= n;
+		this.z *= n;
 		return this;
 	};
 	
@@ -29,5 +29,6 @@ function Vector(x,y,z){
 		this.x = vector.x;
 		this.y = vector.y;
 		this.z = vector.z;
+		return this;
 	}
 }
