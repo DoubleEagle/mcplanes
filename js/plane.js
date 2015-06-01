@@ -17,12 +17,12 @@ function Plane(){
 	
 	this.pressed = [];
 	
-	$(document).keydown(function(e){
+	$(document).keydown($.proxy(function(e){
 		this.pressed[e.which] = true;
-	});
-	$(document).keyup(function(e){
+	)});
+	$(document).keyup($.proxy(function(e){
 		this.pressed[e.which] = false;
-	});
+	)});
 	
 	this.step = function(){
 		//pitch
@@ -61,8 +61,9 @@ function Plane(){
 			};
 		};
 		
-		matrix = Matrix3(this.direction.pitch.x, this.direction.roll.x, this.direction.yaw.x,this.direction.pitch.y, this.direction.roll.y, this.direction.yaw.y,this.direction.pitch.z, this.direction.roll.z, this.direction.yaw.z);
+		matrix = THREE.Matrix3(this.direction.pitch.x, this.direction.roll.x, this.direction.yaw.x,this.direction.pitch.y, this.direction.roll.y, this.direction.yaw.y,this.direction.pitch.z, this.direction.roll.z, this.direction.yaw.z);
 		
 		this.speed = this.direction.roll.multiply(this.throttle);
+		this.position = this.position.add(this.speed);
 	};
 };
