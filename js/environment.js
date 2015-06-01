@@ -7,7 +7,7 @@ function Environment(manager) {
         cloud.material = new THREE.MeshPhongMaterial(
                 {color: 0xFFFFFF, transparent: true, opacity: 0.5, specular: 0xFFFFFF, shininess: 8}
         );
-        console.log('hoi')
+        
     });
     
     manager.load('models/cloud.json', function(cloud) {
@@ -17,7 +17,7 @@ function Environment(manager) {
         cloud.material = new THREE.MeshPhongMaterial(
                 {color: 0xFFFFFF, transparent: true, opacity: 0.5, specular: 0xFFFFFF, shininess: 8}
         );
-        console.log('hoi')
+        
     });
     
     manager.load('models/cloud.json', function(cloud) {
@@ -27,7 +27,7 @@ function Environment(manager) {
         cloud.material = new THREE.MeshPhongMaterial(
                 {color: 0xFFFFFF, transparent: true, opacity: 0.5, specular: 0xFFFFFF, shininess: 8}
         );
-        console.log('hoi')
+        
     });
 
 }
