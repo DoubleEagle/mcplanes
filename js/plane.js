@@ -61,7 +61,7 @@ function Plane(){
 			};
 		};
 		
-		matrix = THREE.Matrix3(this.direction.pitch.x, this.direction.roll.x, this.direction.yaw.x,this.direction.pitch.y, this.direction.roll.y, this.direction.yaw.y,this.direction.pitch.z, this.direction.roll.z, this.direction.yaw.z);
+		//matrix = THREE.Matrix3(this.direction.pitch.x, this.direction.roll.x, this.direction.yaw.x,this.direction.pitch.y, this.direction.roll.y, this.direction.yaw.y,this.direction.pitch.z, this.direction.roll.z, this.direction.yaw.z);
 		
 		this.speed = this.direction.roll.multiply(this.throttle);
 		this.position = this.position.add(this.speed);
