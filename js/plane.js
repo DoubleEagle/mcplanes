@@ -19,10 +19,10 @@ function Plane(){
 	
 	$(document).keydown($.proxy(function(e){
 		this.pressed[e.which] = true;
-	)});
+	},this));
 	$(document).keyup($.proxy(function(e){
 		this.pressed[e.which] = false;
-	)});
+	},this));
 	
 	this.step = function(){
 		//pitch
