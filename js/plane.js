@@ -71,7 +71,7 @@ function Plane(plane){
 		
 		matrix.set(this.direction.pitch.x, this.direction.roll.x, this.direction.yaw.x, 0, this.direction.pitch.y, this.direction.roll.y, this.direction.yaw.y, 0, this.direction.pitch.z, this.direction.roll.z, this.direction.yaw.z, 0, 0, 0, 0, 1);
 		
-		console.log(1);
+		//console.log(1);
 		this.plane.geometry.vertices = this.origGeom.clone().vertices;
 		this.plane.geometry.applyMatrix(matrix);
 		this.plane.geometry.verticesNeedUpdate = true;
