@@ -6,7 +6,7 @@ function Manager(){
 
 	var renderer = new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	document.body.appendChild( renderer.domElement );
+	document.body.appendChild($(renderer.domElement).addClass('game')[0]);
 	
 	//objects here
 
@@ -15,18 +15,11 @@ function Manager(){
 	camera.rotation.z = Math.PI;
 	camera.position.z += 5;
 	
-	var loader = new THREE.JSONLoader(1);
-	loader.load('models/plane01.json', function(geometry, materials){
-		console.log(materials);
-		for(i in materials){
-			materials[i].shading = THREE.FlatShading;
-			materials[i].side = THREE.DoubleSide;
-		}
-		var material = new THREE.MeshFaceMaterial(materials);
-		var plane = new THREE.Mesh(geometry, material);
-		scene.add(plane);
-		this.plane = new Plane(plane);
-	});
+	load('models/plane01.json', 
+		$.proxy(function(plane){
+			this.plane = new Plane(plane);
+		}, this)
+	);
 	
 	var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
 	directionalLight.position.set( -1, 1, 1 );
@@ -36,10 +29,24 @@ function Manager(){
 	directionalLight.position.set( 1, -1, -1 );
 	scene.add( directionalLight );
 	
-	function render() {
-		requestAnimationFrame( render );
-		renderer.render( scene, camera );
+	this.render = function(){
+		requestAnimationFrame($.proxy(this.render, this));
+		renderer.render(scene, camera);
 		this.plane.step();
 	}
-	render();
+	this.render();
+	
+	function load(file, callback){
+		var loader = new THREE.JSONLoader(1);
+		loader.load(file, function(geometry, materials){
+			for(i in materials){
+				materials[i].shading = THREE.FlatShading;
+				materials[i].side = THREE.DoubleSide;
+			}
+			var material = new THREE.MeshFaceMaterial(materials);
+			var mesh = new THREE.Mesh(geometry, material);
+			scene.add(mesh);
+			callback(mesh);
+		});
+	}
 }
