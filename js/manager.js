@@ -23,17 +23,21 @@ function Manager(){
 	
 	var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
 	directionalLight.position.set( -1, 1, 1 );
-	scene.add( directionalLight );
+	scene.add(directionalLight);
 	
 	var directionalLight = new THREE.DirectionalLight( 0xffffff, .3 );
 	directionalLight.position.set( 1, -1, -1 );
-	scene.add( directionalLight );
+	scene.add(directionalLight);
 	
 	this.render = function(){
 		requestAnimationFrame($.proxy(this.render, this));
 		renderer.render(scene, camera);
-		this.plane.step();
+		var time = new Date();
+		var dt = time - this.lastDate;
+		this.lastDate = time;
+		this.plane.step(dt);
 	}
+	this.lastDate = new Date();
 	this.render();
 	
 	function load(file, callback){
