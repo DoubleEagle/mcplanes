@@ -77,7 +77,7 @@ function Plane(plane){
 		this.plane.geometry.verticesNeedUpdate = true;
 		
 		this.speed = this.direction.roll.clone().multiply(this.throttle);
-		this.position = this.position.add(this.speed);
+		this.position = this.position.add(this.speed.multiply(-.01));
 		this.plane.position = this.position;
 	};
 };
