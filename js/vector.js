@@ -5,6 +5,7 @@ function Vector(x,y,z){
 	this.add = add;
 	this.multiply = multiply;
 	this.clone = clone;
+	this.copy = copy;
 	
 	function add(vector){
 		this.x += vector.x;
@@ -14,13 +15,19 @@ function Vector(x,y,z){
 	};
 	
 	function multiply(n){
-		x = this.x * n;
-		y = this.y * n;
-		z = this.z * n;
+		this.x = this.x * n;
+		this.y = this.y * n;
+		this.z = this.z * n;
 		return this;
 	};
 	
 	function clone(){
 		return new Vector(this.x, this.y, this.z);
 	};
+	
+	function copy(vector){
+		this.x = vector.x;
+		this.y = vector.y;
+		this.z = vector.z;
+	}
 }
