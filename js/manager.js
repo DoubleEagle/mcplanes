@@ -1,4 +1,6 @@
 function Manager(){
+	this.load = load;
+
 	this.plane = {step: function(){}};
 	
 	var scene = new THREE.Scene();
@@ -8,14 +10,18 @@ function Manager(){
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild($(renderer.domElement).addClass('game')[0]);
 	
+	$(window).resize(function(){
+		$('.game').attr({width: window.innerWidth, height: window.innerHeight});
+	});
+	
 	//objects here
 
 	camera.position.y = 20;
 	camera.rotation.x = Math.PI+Math.PI/2*1.3;
 	camera.rotation.z = Math.PI;
-	camera.position.z += 10;
+	camera.position.z = 10;
 	
-	load('models/plane02.json', 
+	this.load('models/plane02.json', 
 		$.proxy(function(plane){
 			this.plane = new Plane(plane);
 		}, this)
@@ -28,6 +34,8 @@ function Manager(){
 	var directionalLight = new THREE.DirectionalLight( 0xffffff, .3 );
 	directionalLight.position.set( 1, -1, -1 );
 	scene.add(directionalLight);
+	
+	this.environment = new Environment(this);
 	
 	this.render = function(){
 		requestAnimationFrame($.proxy(this.render, this));
