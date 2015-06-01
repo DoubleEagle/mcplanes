@@ -1,7 +1,7 @@
-function plane(){
+function Plane(){
 	this.position = new Vector(0,0,0);
 	this.speed = new Vector(0,0,0);
-	this.direction{
+	this.direction = {
 		pitch = new Vector(1,0,0);
 		roll = new Vector(0,1,0);
 		yaw = new Vector(0,0,1);
@@ -25,14 +25,6 @@ function plane(){
 	});
 	
 	this.step = function(){
-		//yaw
-		if(this.pressed[68]){
-			rotate(this.direction.roll, this.direction.pitch, .1);
-		};
-		if(this.pressed[65]){
-			rotate(this.direction.roll, this.direction.pitch, -.1);
-		};
-		
 		//pitch
 		if(this.pressed[87]){
 			rotate(this.direction.roll, this.direction.yaw, .1);
@@ -49,6 +41,14 @@ function plane(){
 			rotate(this.direction.pitch, this.direction.yaw, -.1);
 		};
 		
+		//yaw
+		if(this.pressed[68]){
+			rotate(this.direction.roll, this.direction.pitch, .1);
+		};
+		if(this.pressed[65]){
+			rotate(this.direction.roll, this.direction.pitch, -.1);
+		};
+		
 		//throttle
 		if(this.pressed[16]){
 			if(this.throttle < 100){
@@ -60,5 +60,9 @@ function plane(){
 				this.throttle -= 1;
 			};
 		};
+		
+		matrix = Matrix3(this.direction.pitch.x, this.direction.roll.x, this.direction.yaw.x,this.direction.pitch.y, this.direction.roll.y, this.direction.yaw.y,this.direction.pitch.z, this.direction.roll.z, this.direction.yaw.z);
+		
+		this.speed = this.direction.roll.multiply(this.throttle);
 	};
 };
