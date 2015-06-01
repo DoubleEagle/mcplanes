@@ -2,9 +2,9 @@ function Plane(){
 	this.position = new Vector(0,0,0);
 	this.speed = new Vector(0,0,0);
 	this.direction = {
-		pitch = new Vector(1,0,0);
-		roll = new Vector(0,1,0);
-		yaw = new Vector(0,0,1);
+		pitch: new Vector(1,0,0),
+		roll: new Vector(0,1,0),
+		yaw: new Vector(0,0,1)
 	};
 	this.throttle = 0;
 	
