@@ -10,12 +10,12 @@ function Manager(){
 	
 	//objects here
 
-	camera.position.y = 10;
+	camera.position.y = 20;
 	camera.rotation.x = Math.PI+Math.PI/2*1.3;
 	camera.rotation.z = Math.PI;
-	camera.position.z += 5;
+	camera.position.z += 10;
 	
-	load('models/plane01.json', 
+	load('models/plane02.json', 
 		$.proxy(function(plane){
 			this.plane = new Plane(plane);
 		}, this)
