@@ -6,6 +6,7 @@ function Vector(x,y,z){
 	this.multiply = multiply;
 	this.clone = clone;
 	this.copy = copy;
+	this.toThree = toThree;
 	
 	function add(vector){
 		this.x += vector.x;
@@ -30,5 +31,9 @@ function Vector(x,y,z){
 		this.y = vector.y;
 		this.z = vector.z;
 		return this;
+	}
+	
+	function toThree(){
+		return new THREE.Vector3(this.x, this.y, this.z);
 	}
 }

@@ -1,9 +1,9 @@
-function Plane(plane){
+function Plane(plane, camera){
 	this.position = new Vector(0,0,0);
 	this.speed = new Vector(0,0,0);
 	this.direction = {
-		pitch: new Vector(1,0,0),
-		roll: new Vector(0,1,0),
+		pitch: new Vector(-1,0,0),
+		roll: new Vector(0,-1,0),
 		yaw: new Vector(0,0,1)
 	};
 	this.direction.pitch.name = 'pitch';
@@ -11,6 +11,7 @@ function Plane(plane){
 	this.direction.yaw.name = 'yaw';
 	this.throttle = 0;
 	this.plane = plane;
+	this.camera = camera;
 	this.lastMatrix = new THREE.Matrix3();
 	
 	function rotate(v1, v2, angle){
@@ -33,18 +34,18 @@ function Plane(plane){
 		
 		//pitch
 		if(this.pressed[87]){
-			rotate(this.direction.roll, this.direction.yaw, .1);
+			rotate(this.direction.roll, this.direction.yaw, -.1);
 		};
 		if(this.pressed[83]){
-			rotate(this.direction.roll, this.direction.yaw, -.1);
+			rotate(this.direction.roll, this.direction.yaw, .1);
 		};
 		
 		//roll
 		if(this.pressed[69]){
-			rotate(this.direction.pitch, this.direction.yaw, .1);
+			rotate(this.direction.pitch, this.direction.yaw, -.1);
 		};
 		if(this.pressed[81]){
-			rotate(this.direction.pitch, this.direction.yaw, -.1);
+			rotate(this.direction.pitch, this.direction.yaw, .1);
 		};
 		
 		//yaw
@@ -76,7 +77,13 @@ function Plane(plane){
 		this.lastMatrix = matrix;
 		
 		this.speed = this.direction.roll.clone().multiply(this.throttle);
-		this.position = this.position.add(this.speed.multiply(-.01));
+		this.position = this.position.add(this.speed.multiply(.01));
 		this.plane.position = this.position;
+		
+		var camRotation = new THREE.Matrix4();
+		camRotation.set(this.direction.pitch.x, this.direction.yaw.x, -this.direction.roll.x, 0, this.direction.pitch.y, this.direction.yaw.y, -this.direction.roll.y, 0, this.direction.pitch.z, this.direction.yaw.z, -this.direction.roll.z, 0, 0, 0, 0, 1);
+		
+		this.camera.position = this.position.clone().add(this.direction.roll.clone().multiply(-10)).add(this.direction.yaw.clone().multiply(3)).toThree();
+		this.camera.rotation.setEulerFromRotationMatrix(camRotation, 'XYZ');
 	};
 };

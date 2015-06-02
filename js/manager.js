@@ -20,7 +20,7 @@ function Manager(){
 	this.camera.rotation.z = Math.PI;
 	this.camera.rotation.x = Math.PI+Math.PI/2*1.3;
 	this.camera.position.z = 10;
-	this.load('models/plane02.json', 
+	this.load('models/plane01.json', 
 		$.proxy(function(plane){
 			this.plane = new Plane(plane, this.camera);
 		}, this)
@@ -89,7 +89,6 @@ THREE.Matrix3.prototype.inverse = function(){
 }
 
 THREE.Matrix3.prototype.to4 = function(){
-	console.log(this.elements);
 	var mat4 = new THREE.Matrix4();
 	mat4.set(this.elements[0], this.elements[3], this.elements[6], 0, this.elements[1], this.elements[4], this.elements[7], 0, this.elements[2], this.elements[5], this.elements[8], 0, 0, 0, 0, 1);
 	return mat4;
