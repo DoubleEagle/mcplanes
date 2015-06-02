@@ -34,7 +34,7 @@ function Vector(x,y,z){
 		return this;
 	}
 	
-	function toThree(){ 
+	function toThree(){
 		return new THREE.Vector3(this.x, this.y, this.z);
 	}
 	
