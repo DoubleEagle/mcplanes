@@ -97,9 +97,6 @@ function Plane(plane, camera){
 		this.speed = this.speed.add(this.fres.multiply(step/1000));
 		this.position = this.position.add(this.speed.clone().multiply(step/1000));
 		this.plane.position = this.position;
-		// console.log(this.drag);
-		// console.log(this.lift);
-		// console.log(this.speed);
 		var camRotation = new THREE.Matrix4();
 		camRotation.set(this.direction.pitch.x, this.direction.yaw.x, -this.direction.roll.x, 0, this.direction.pitch.y, this.direction.yaw.y, -this.direction.roll.y, 0, this.direction.pitch.z, this.direction.yaw.z, -this.direction.roll.z, 0, 0, 0, 0, 1);
 		
@@ -125,7 +122,5 @@ function Plane(plane, camera){
 			"horizontal speed (m/s):   " + (Math.round(Math.pow(this.speed.x * this.speed.x + this.speed.y * this.speed.y, .5)*100)/100) + "<br>" +
 			"vertical speed (m/s):   " + (Math.round(this.speed.z*100)/100)
 		);
-		console.log(this.speed.getLength());
-		console.log(this.position.z);
 	};
 };
