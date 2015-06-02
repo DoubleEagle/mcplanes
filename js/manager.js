@@ -3,8 +3,8 @@ function Manager(){
 
 	this.plane = {step: function(){}};
 	
-	var scene = new THREE.Scene();
-	var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+	this.scene = new THREE.Scene();
+	this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 	var renderer = new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -16,29 +16,29 @@ function Manager(){
 	
 	//objects here
 
-	camera.position.y = 20;
-	camera.rotation.x = Math.PI+Math.PI/2*1.3;
-	camera.rotation.z = Math.PI;
-	camera.position.z = 10;
-	this.load('models/plane01.json', 
+	this.camera.position.y = 20;
+	this.camera.rotation.z = Math.PI;
+	this.camera.rotation.x = Math.PI+Math.PI/2*1.3;
+	this.camera.position.z = 10;
+	this.load('models/plane02.json', 
 		$.proxy(function(plane){
-			this.plane = new Plane(plane, camera);
+			this.plane = new Plane(plane, this.camera);
 		}, this)
 	);
 	
 	var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
 	directionalLight.position.set( -1, 1, 1 );
-	scene.add(directionalLight);
+	this.scene.add(directionalLight);
 	
 	var directionalLight = new THREE.DirectionalLight( 0xffffff, .3 );
 	directionalLight.position.set( 1, -1, -1 );
-	scene.add(directionalLight);
+	this.scene.add(directionalLight);
 	
 	this.environment = new Environment(this);
 	
 	this.render = function(){
 		requestAnimationFrame($.proxy(this.render, this));
-		renderer.render(scene, camera);
+		renderer.render(this.scene, this.camera);
 		var time = new Date();
 		var dt = time - this.lastDate;
 		this.lastDate = time;
@@ -56,8 +56,42 @@ function Manager(){
 			}
 			var material = new THREE.MeshFaceMaterial(materials);
 			var mesh = new THREE.Mesh(geometry, material);
-			scene.add(mesh);
+			this.scene.add(mesh);
 			callback(mesh);
 		});
 	}
+}
+
+//[0,1,2]
+//[3,4,5]
+//[6,7,8]
+
+THREE.Matrix3.prototype.inverse = function(){
+	var coords = [];
+	for(var i in this.elements){
+		coords[i] = {x: i%3, y: Math.floor(i/3)};
+	}
+	var inverse = new THREE.Matrix3();
+	var determinant = 
+		this.elements[0] * this.elements[4] * this.elements[8] +
+		this.elements[1] * this.elements[5] * this.elements[6] +
+		this.elements[2] * this.elements[3] * this.elements[7] -
+		this.elements[2] * this.elements[4] * this.elements[6] -
+		this.elements[1] * this.elements[3] * this.elements[8] -
+		this.elements[0] * this.elements[5] * this.elements[7];
+	for(var i in this.elements){
+		var matrix2 = [];
+		for(var j in this.elements){
+			if(coords[i].x !== coords[j].x && coords[i].y !== coords[j].y){
+				matrix2.push(this.elements[j]);
+			}
+		}
+		inverse.elements[i] = 1/determinant * (matrix2[0] * matrix2[3] - matrix2[1] * matrix2[2]) * (i % 2 == 0 ? 1 : -1);
+	}
+	inverse.transpose();
+	return inverse;
+}
+
+THREE.Matrix3.prototype.to4 = function(){
+	return new THREE.Matrix4().set(this.elements[0], this.elements[1], this.elements[2], 0, this.elements[3], this.elements[4], this.elements[5], 0, this.elements[6], this.elements[7], this.elements[8], 0, 0, 0, 0, 1);
 }
