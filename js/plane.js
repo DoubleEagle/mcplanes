@@ -121,7 +121,7 @@ function Plane(plane, camera){
 		$("div.info").html(
 			"airspeed (m/s):   " + (Math.round(this.speed.getLength()*100)/100) + "<br>" +
 			"altitude (m):   " + (Math.round((this.position.z + 50)*100)/100) + "<br>" +
-			"throttle (%):   " + (Math.round(this.throttle * 10000)/100) + "<br>" +
+			"throttle (%):   " + (Math.round(this.throttle * 10000) / 100) + "<br>" +
 			"horizontal speed (m/s):   " + (Math.round(Math.pow(this.speed.x * this.speed.x + this.speed.y * this.speed.y, .5)*100)/100) + "<br>" +
 			"vertical speed (m/s):   " + (Math.round(this.speed.z*100)/100)
 		);

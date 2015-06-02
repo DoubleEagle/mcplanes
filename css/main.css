@@ -22,3 +22,13 @@ canvas {
 	margin: 0px;
 	text-align: center;
 }
+.info {
+	position: fixed;
+	width: 250px;
+	height: 200px;
+	background-color: rgba(0, 0, 0, 0.3);
+	top: 0px;
+	right: 0px;
+	color: #FFFFFF;
+	padding: 10px;
+}
