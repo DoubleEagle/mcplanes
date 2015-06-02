@@ -30,8 +30,7 @@ function Environment(manager) {
 
     });
 
-    console.log('1');
-    var geometry = new THREE.PlaneGeometry(200, 200, 320);
+    var geometry = new THREE.PlaneGeometry(200, 200);
     
     var texture = THREE.ImageUtils.loadTexture('images/grass.png');
     texture.wrapS = THREE.RepeatWrapping;
@@ -40,9 +39,9 @@ function Environment(manager) {
     var material = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide, map: texture});
     
     var plane = new THREE.Mesh(geometry, material);
+    plane.position.z = -50;
     
     
     manager.scene.add(plane);
-    console.log('2');
 
 }
