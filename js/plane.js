@@ -22,6 +22,7 @@ function Plane(plane, camera){
 	this.cl = .6;
 	this.cd = .05;
 	this.main = false;
+	this.lines = [];
 	
 	function rotate(v1, v2, angle){
 		t1 = v1.clone();
@@ -43,7 +44,16 @@ function Plane(plane, camera){
 		}
 	},this));
 	
+	var renderer = new THREE.WebGLRenderer();
+	var material = new THREE.LineBasicMaterial({
+		color: 0xffffff,
+	});
+	
 	this.step = function(step){
+		var geometryright = new THREE.Geometry();
+		var geometryleft = new THREE.Geometry();
+		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(5)).toThree());
+		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-5)).toThree());
 		//pitch
 		if(this.pressed[87]){
 			rotate(this.direction.roll, this.direction.yaw, -1*step/1000);
@@ -114,6 +124,17 @@ function Plane(plane, camera){
 		if(this.pressed[39]){
 			this.b -= .1;
 		}
+		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(5)).toThree());
+		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-5)).toThree());
+		var lineright = new THREE.Line(geometryright, material);
+		var lineleft = new THREE.Line(geometryleft, material);
+		manager.scene.add(lineright);
+		manager.scene.add(lineleft);
+		this.lines.push(lineright);		
+		this.lines.push(lineleft);
+		while(this.lines.length > 500){
+			manager.scene.remove(this.lines.shift());
+		};
 		this.camera.rotation.setEulerFromRotationMatrix(camRotation, 'XYZ');
 		$("div.info").html(
 			"airspeed (m/s):   " + (Math.round(this.speed.getLength()*100)/100) + "<br>" +
@@ -121,6 +142,6 @@ function Plane(plane, camera){
 			"throttle (%):   " + (Math.round(this.throttle * 10000)/100) + "<br>" +
 			"horizontal speed (m/s):   " + (Math.round(Math.pow(this.speed.x * this.speed.x + this.speed.y * this.speed.y, .5)*100)/100) + "<br>" +
 			"vertical speed (m/s):   " + (Math.round(this.speed.z*100)/100)
-		);
+		);	
 	};
 };
