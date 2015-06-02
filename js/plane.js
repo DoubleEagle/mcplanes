@@ -14,7 +14,7 @@ function Plane(plane, camera){
 	this.camera = camera;
 	this.lastMatrix = new THREE.Matrix3();
 	this.a = -10;
-	this.b = 0.7;
+	this.b = 3;
 	this.plane.material.materials[1].opacity = .2;
 	this.g = new Vector(0,0,0);
 	this.lift = new Vector(0,0,0);
