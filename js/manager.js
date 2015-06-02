@@ -1,51 +1,15 @@
 function Manager(){
 	this.load = load;
+	this.init3d = init3d;
+	this.render = render;
 
-	this.plane = {step: function(){}};
+	this.objects = [];
 	
-	this.scene = new THREE.Scene();
-	this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-	var renderer = new THREE.WebGLRenderer();
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	document.body.appendChild($(renderer.domElement).addClass('game')[0]);
-	
-	$(window).resize(function(){
-		$('.game').attr({width: window.innerWidth, height: window.innerHeight});
-	});
-	
-	//objects here
-
-	this.camera.position.y = 20;
-	this.camera.rotation.z = Math.PI;
-	this.camera.rotation.x = Math.PI+Math.PI/2*1.3;
-	this.camera.position.z = 10;
-	this.load('models/plane02.2.json', 
-		$.proxy(function(plane){
-			this.plane = new Plane(plane, this.camera);
-		}, this)
-	);
-	
-	var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
-	directionalLight.position.set( -1, 1, 1 );
-	this.scene.add(directionalLight);
-	
-	var directionalLight = new THREE.DirectionalLight( 0xffffff, .3 );
-	directionalLight.position.set( 1, -1, -1 );
-	this.scene.add(directionalLight);
+	this.init3d();
 	
 	this.environment = new Environment(this);
 	
-	this.render = function(){
-		requestAnimationFrame($.proxy(this.render, this));
-		renderer.render(this.scene, this.camera);
-		var time = new Date();
-		var dt = time - this.lastDate;
-		this.lastDate = time;
-		this.plane.step(dt);
-	}
 	this.lastDate = new Date();
-	this.render();
 	
 	function load(file, callback){
 		var loader = new THREE.JSONLoader(1);
@@ -55,10 +19,62 @@ function Manager(){
 				materials[i].side = THREE.DoubleSide;
 			}
 			var material = new THREE.MeshFaceMaterial(materials);
-			var mesh = new THREE.Mesh(geometry, material);
-			this.scene.add(mesh);
-			callback(mesh);
+			callback(geometry, material);
 		}, this));
+	}
+	
+	function init3d(){
+		this.scene = new THREE.Scene();
+		this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+		this.renderer = new THREE.WebGLRenderer();
+		this.renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild($(this.renderer.domElement).addClass('game')[0]);
+		
+		$(window).resize(function(){
+			$('.game').attr({width: window.innerWidth, height: window.innerHeight});
+		});
+		
+		//objects here
+
+		this.camera.position.y = 20;
+		this.camera.rotation.z = Math.PI;
+		this.camera.rotation.x = Math.PI+Math.PI/2*1.3;
+		this.camera.position.z = 10;
+		this.load('models/plane02.2.json', 
+			$.proxy(function(geometry, material){
+				this.planeGeometry = geometry.clone();
+				var mesh = new THREE.Mesh(geometry, material);
+				this.scene.add(mesh);
+				var plane = new Plane(mesh, this.camera);
+				plane.main = true;
+				this.objects.push(plane);
+				this.mpManager = new MpManager(plane, this.objects);
+			}, this)
+		);
+		
+		var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
+		directionalLight.position.set( -1, 1, 1 );
+		this.scene.add(directionalLight);
+		
+		var directionalLight = new THREE.DirectionalLight( 0xffffff, .3 );
+		directionalLight.position.set( 1, -1, -1 );
+		this.scene.add(directionalLight);
+		this.render();
+	}
+	
+	function render(){
+		requestAnimationFrame($.proxy(this.render, this));
+		
+		this.renderer.render(this.scene, this.camera);
+		
+		var time = new Date();
+		var dt = time - this.lastDate;
+		this.lastDate = time;
+		
+		for(var i in this.objects){
+			this.objects[i].step(dt);
+		}
 	}
 }
 
