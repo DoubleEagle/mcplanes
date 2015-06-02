@@ -1,5 +1,5 @@
 function Environment(manager) {
-    
+
     manager.load('models/cloud.json', function(cloud) {
         cloud.position.x = 5;
         cloud.position.y = 10;
@@ -7,9 +7,9 @@ function Environment(manager) {
         cloud.material = new THREE.MeshPhongMaterial(
                 {color: 0xFFFFFF, transparent: true, opacity: 0.5, specular: 0xFFFFFF, shininess: 8}
         );
-        
+
     });
-    
+
     manager.load('models/cloud.json', function(cloud) {
         cloud.position.x = 5;
         cloud.position.y = -40;
@@ -17,9 +17,9 @@ function Environment(manager) {
         cloud.material = new THREE.MeshPhongMaterial(
                 {color: 0xFFFFFF, transparent: true, opacity: 0.5, specular: 0xFFFFFF, shininess: 8}
         );
-        
+
     });
-    
+
     manager.load('models/cloud.json', function(cloud) {
         cloud.position.x = -20;
         cloud.position.y = -30;
@@ -27,7 +27,22 @@ function Environment(manager) {
         cloud.material = new THREE.MeshPhongMaterial(
                 {color: 0xFFFFFF, transparent: true, opacity: 0.5, specular: 0xFFFFFF, shininess: 8}
         );
-        
+
     });
+
+    console.log('1');
+    var geometry = new THREE.PlaneGeometry(200, 200, 320);
+    
+    var texture = THREE.ImageUtils.loadTexture('images/grass.png');
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(60,60);
+    var material = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide, map: texture});
+    
+    var plane = new THREE.Mesh(geometry, material);
+    
+    
+    manager.scene.add(plane);
+    console.log('2');
 
 }
