@@ -32,3 +32,6 @@ canvas {
 	color: #FFFFFF;
 	padding: 10px;
 }
+.player-list .me{
+	color: #8888FF;
+}
