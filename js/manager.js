@@ -20,7 +20,7 @@ function Manager(){
 	this.camera.rotation.z = Math.PI;
 	this.camera.rotation.x = Math.PI+Math.PI/2*1.3;
 	this.camera.position.z = 10;
-	this.load('models/plane01.json', 
+	this.load('models/plane02.2.json', 
 		$.proxy(function(plane){
 			this.plane = new Plane(plane, this.camera);
 		}, this)
