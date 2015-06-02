@@ -1,5 +1,5 @@
 function MpManager(plane, manager){
-	this.socket = io.connect('192.168.1.20:8080');
+	this.socket = io.connect('192.168.0.20:8080');
 	
 	this.socket.emit('join', {name: prompt('Please enter your name', 'Dinges')});
 	this.settings = {};
