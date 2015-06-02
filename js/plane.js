@@ -2,8 +2,8 @@ function Plane(plane, camera){
 	this.position = new Vector(0,0,0);
 	this.speed = new Vector(0,0,0);
 	this.direction = {
-		pitch: new Vector(-1,0,0),
-		roll: new Vector(0,-1,0),
+		pitch: new Vector(1,0,0),
+		roll: new Vector(0,1,0),
 		yaw: new Vector(0,0,1)
 	};
 	this.direction.pitch.name = 'pitch';
@@ -21,6 +21,7 @@ function Plane(plane, camera){
 	this.maxthrust = 20;
 	this.cl = .6;
 	this.cd = .05;
+	this.main = false;
 	
 	function rotate(v1, v2, angle){
 		t1 = v1.clone();
@@ -32,10 +33,14 @@ function Plane(plane, camera){
 	this.pressed = [];
 	
 	$(document).keydown($.proxy(function(e){
-		this.pressed[e.which] = true;
+		if(this.main){
+			this.pressed[e.which] = true;
+		}
 	},this));
 	$(document).keyup($.proxy(function(e){
-		this.pressed[e.which] = false;
+		if(this.main){
+			this.pressed[e.which] = false;
+		}
 	},this));
 	
 	this.step = function(step){
@@ -87,16 +92,14 @@ function Plane(plane, camera){
 		this.g.z = -9.81;
 		this.thrust = this.direction.roll.clone().multiply(this.maxthrust*this.throttle);
 		this.drag = this.speed.clone().multiply(this.speed.clone().getLength()*-1*this.cd);
-		this.fres = this.lift.clone().add(this.g.clone()).add(this.thrust.clone())
-		.add(this.drag.clone())
-		;
+		this.fres = this.lift.clone().add(this.g.clone()).add(this.thrust.clone()).add(this.drag.clone());
 		
 		this.speed = this.speed.add(this.fres.multiply(step/1000));
 		this.position = this.position.add(this.speed.clone().multiply(step/1000));
 		this.plane.position = this.position;
-		console.log(this.drag);
-		console.log(this.lift);
-		console.log(this.speed);
+		// console.log(this.drag);
+		// console.log(this.lift);
+		// console.log(this.speed);
 		var camRotation = new THREE.Matrix4();
 		camRotation.set(this.direction.pitch.x, this.direction.yaw.x, -this.direction.roll.x, 0, this.direction.pitch.y, this.direction.yaw.y, -this.direction.roll.y, 0, this.direction.pitch.z, this.direction.yaw.z, -this.direction.roll.z, 0, 0, 0, 0, 1);
 		
@@ -117,5 +120,6 @@ function Plane(plane, camera){
 		this.camera.rotation.setEulerFromRotationMatrix(camRotation, 'XYZ');
 		
 		console.log(this.speed.getLength());
+		console.log(this.position.z);
 	};
 };
