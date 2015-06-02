@@ -13,6 +13,11 @@ function Plane(plane, camera){
 	this.plane = plane;
 	this.camera = camera;
 	this.lastMatrix = new THREE.Matrix3();
+	this.a = 2.5;
+	this.b = 0.7;
+	this.plane.material.materials[1].opacity = .2;
+	this.g = new Vector(0,0,0);
+	this.lift = new Vector(0,0,0);
 	
 	function rotate(v1, v2, angle){
 		t1 = v1.clone();
@@ -30,30 +35,29 @@ function Plane(plane, camera){
 		this.pressed[e.which] = false;
 	},this));
 	
-	this.step = function(){
-		
+	this.step = function(step){
 		//pitch
 		if(this.pressed[87]){
-			rotate(this.direction.roll, this.direction.yaw, -.1);
+			rotate(this.direction.roll, this.direction.yaw, -.003*step);
 		};
 		if(this.pressed[83]){
-			rotate(this.direction.roll, this.direction.yaw, .1);
+			rotate(this.direction.roll, this.direction.yaw, .003*step);
 		};
 		
 		//roll
 		if(this.pressed[69]){
-			rotate(this.direction.pitch, this.direction.yaw, -.1);
+			rotate(this.direction.pitch, this.direction.yaw, -.003*step);
 		};
 		if(this.pressed[81]){
-			rotate(this.direction.pitch, this.direction.yaw, .1);
+			rotate(this.direction.pitch, this.direction.yaw, .003*step);
 		};
 		
 		//yaw
 		if(this.pressed[68]){
-			rotate(this.direction.roll, this.direction.pitch, .1);
+			rotate(this.direction.roll, this.direction.pitch, .003*step);
 		};
 		if(this.pressed[65]){
-			rotate(this.direction.roll, this.direction.pitch, -.1);
+			rotate(this.direction.roll, this.direction.pitch, -.003*step);
 		};
 		
 		//throttle
@@ -75,6 +79,8 @@ function Plane(plane, camera){
 		this.plane.geometry.verticesNeedUpdate = true;
 		
 		this.lastMatrix = matrix;
+		console.log(this.lift);
+		this.lift = this.direction.yaw.clone().multiply(Math.pow(this.speed.x*this.speed.x+this.speed.y*this.speed.y+this.speed.z*this.speed.z, .5));
 		
 		this.speed = this.direction.roll.clone().multiply(this.throttle);
 		this.position = this.position.add(this.speed.multiply(.01));
@@ -83,7 +89,20 @@ function Plane(plane, camera){
 		var camRotation = new THREE.Matrix4();
 		camRotation.set(this.direction.pitch.x, this.direction.yaw.x, -this.direction.roll.x, 0, this.direction.pitch.y, this.direction.yaw.y, -this.direction.roll.y, 0, this.direction.pitch.z, this.direction.yaw.z, -this.direction.roll.z, 0, 0, 0, 0, 1);
 		
-		this.camera.position = this.position.clone().add(this.direction.roll.clone().multiply(-10)).add(this.direction.yaw.clone().multiply(3)).toThree();
+		this.camera.position = this.position.clone().add(this.direction.roll.clone().multiply(this.a)).add(this.direction.yaw.clone().multiply(this.b)).toThree();
+		if(this.pressed[38]){
+			this.a -= .1;
+		}
+			if(this.pressed[40]){
+			this.a += .1;
+		}
+
+		if(this.pressed[37]){
+			this.b += .1;
+		}
+		if(this.pressed[39]){
+			this.b -= .1;
+		}
 		this.camera.rotation.setEulerFromRotationMatrix(camRotation, 'XYZ');
 	};
 };
