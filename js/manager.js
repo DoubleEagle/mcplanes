@@ -49,7 +49,7 @@ function Manager(){
 	
 	function load(file, callback){
 		var loader = new THREE.JSONLoader(1);
-		loader.load(file, function(geometry, materials){
+		loader.load(file, $.proxy(function(geometry, materials){
 			for(i in materials){
 				materials[i].shading = THREE.FlatShading;
 				materials[i].side = THREE.DoubleSide;
@@ -58,7 +58,7 @@ function Manager(){
 			var mesh = new THREE.Mesh(geometry, material);
 			this.scene.add(mesh);
 			callback(mesh);
-		});
+		}, this));
 	}
 }
 
