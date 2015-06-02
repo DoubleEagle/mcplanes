@@ -1,13 +1,13 @@
 function Environment(manager) {
 
     manager.load('models/cloud.json', function(cloud) {
-        cloud.position.x = 5;
-        cloud.position.y = 10;
-        cloud.position.z = 10;
+        cloud.position.x = 30;
+        cloud.position.y = -20;
+        cloud.position.z = 8;
         cloud.material = new THREE.MeshPhongMaterial(
                 {color: 0xFFFFFF, transparent: true, opacity: 0.5, specular: 0xFFFFFF, shininess: 8}
         );
-
+        cloud.scale.set(10,10,3);
     });
 
     manager.load('models/cloud.json', function(cloud) {
