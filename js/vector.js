@@ -7,6 +7,7 @@ function Vector(x,y,z){
 	this.clone = clone;
 	this.copy = copy;
 	this.toThree = toThree;
+	this.getLength = getLength;
 	
 	function add(vector){
 		this.x += vector.x;
@@ -35,5 +36,9 @@ function Vector(x,y,z){
 	
 	function toThree(){
 		return new THREE.Vector3(this.x, this.y, this.z);
+	}
+	
+	function getLength(){
+		return Math.pow(this.x*this.x+this.y*this.y+this.z*this.z, .5);
 	}
 }
