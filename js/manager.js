@@ -62,10 +62,6 @@ function Manager(){
 	}
 }
 
-//[0,1,2]
-//[3,4,5]
-//[6,7,8]
-
 THREE.Matrix3.prototype.inverse = function(){
 	var coords = [];
 	for(var i in this.elements){
@@ -93,5 +89,8 @@ THREE.Matrix3.prototype.inverse = function(){
 }
 
 THREE.Matrix3.prototype.to4 = function(){
-	return new THREE.Matrix4().set(this.elements[0], this.elements[1], this.elements[2], 0, this.elements[3], this.elements[4], this.elements[5], 0, this.elements[6], this.elements[7], this.elements[8], 0, 0, 0, 0, 1);
+	console.log(this.elements);
+	var mat4 = new THREE.Matrix4();
+	mat4.set(this.elements[0], this.elements[3], this.elements[6], 0, this.elements[1], this.elements[4], this.elements[7], 0, this.elements[2], this.elements[5], this.elements[8], 0, 0, 0, 0, 1);
+	return mat4;
 }

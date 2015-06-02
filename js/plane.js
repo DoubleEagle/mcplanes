@@ -11,7 +11,7 @@ function Plane(plane){
 	this.direction.yaw.name = 'yaw';
 	this.throttle = 0;
 	this.plane = plane;
-	this.origGeom = plane.geometry.clone();
+	this.lastMatrix = new THREE.Matrix3();
 	
 	function rotate(v1, v2, angle){
 		t1 = v1.clone();
@@ -67,14 +67,13 @@ function Plane(plane){
 			};
 		};
 		
-		matrix = new THREE.Matrix4();
+		matrix = new THREE.Matrix3();
+		matrix.set(this.direction.pitch.x, this.direction.roll.x, this.direction.yaw.x, this.direction.pitch.y, this.direction.roll.y, this.direction.yaw.y, this.direction.pitch.z, this.direction.roll.z, this.direction.yaw.z);
 		
-		matrix.set(this.direction.pitch.x, this.direction.roll.x, this.direction.yaw.x, 0, this.direction.pitch.y, this.direction.roll.y, this.direction.yaw.y, 0, this.direction.pitch.z, this.direction.roll.z, this.direction.yaw.z, 0, 0, 0, 0, 1);
-		
-		//console.log(1);
-		this.plane.geometry.vertices = this.origGeom.clone().vertices;
-		this.plane.geometry.applyMatrix(matrix);
+		this.plane.geometry.applyMatrix(matrix.to4().multiply(this.lastMatrix.inverse().to4()));
 		this.plane.geometry.verticesNeedUpdate = true;
+		
+		this.lastMatrix = matrix;
 		
 		this.speed = this.direction.roll.clone().multiply(this.throttle);
 		this.position = this.position.add(this.speed.multiply(-.01));
