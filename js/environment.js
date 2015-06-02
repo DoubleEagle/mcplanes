@@ -30,12 +30,12 @@ function Environment(manager) {
 
     });
 
-    var geometry = new THREE.PlaneGeometry(200, 200);
+    var geometry = new THREE.PlaneGeometry(100000, 100000);
     
     var texture = THREE.ImageUtils.loadTexture('images/grass.png');
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(60,60);
+    texture.repeat.set(8000,8000);
     var material = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide, map: texture});
     
     var plane = new THREE.Mesh(geometry, material);
