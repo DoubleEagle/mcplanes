@@ -114,7 +114,7 @@ function Plane(plane, camera){
 		if(this.pressed[38]){
 			this.a -= .1;
 		}
-			if(this.pressed[40]){
+		if(this.pressed[40]){
 			this.a += .1;
 		}
 
@@ -136,13 +136,15 @@ function Plane(plane, camera){
 			manager.scene.remove(this.lines.shift());
 		};
 		this.camera.rotation.setEulerFromRotationMatrix(camRotation, 'XYZ');
-		$("div.info").html(
-			"airspeed (m/s):   " + (Math.round(this.speed.getLength()*100)/100) + "<br>" +
-			"altitude (m):   " + (Math.round((this.position.z + 50)*100)/100) + "<br>" +
-			"throttle (%):   " + (Math.round(this.throttle * 10000)/100) + "<br>" +
-			"horizontal speed (m/s):   " + (Math.round(Math.pow(this.speed.x * this.speed.x + this.speed.y * this.speed.y, .5)*100)/100) + "<br>" +
-			"vertical speed (m/s):   " + (Math.round(this.speed.z*100)/100)
-		);
+		if(this.main){
+			$("div.info").html(
+				"airspeed (m/s):   " + (Math.round(this.speed.getLength()*100)/100) + "<br>" +
+				"altitude (m):   " + (Math.round((this.position.z + 50)*100)/100) + "<br>" +
+				"throttle (%):   " + (Math.round(this.throttle * 10000)/100) + "<br>" +
+				"horizontal speed (m/s):   " + (Math.round(Math.pow(this.speed.x * this.speed.x + this.speed.y * this.speed.y, .5)*100)/100) + "<br>" +
+				"vertical speed (m/s):   " + (Math.round(this.speed.z*100)/100)
+			);
+		}
 		// if(this.position.z < -50){
 			// this.direction.roll.z = -this.direction.roll.z;
 			// this.direction.yaw.z = -this.direction.yaw.z;
@@ -151,4 +153,28 @@ function Plane(plane, camera){
 			// this.position.z = -100-this.position.z;
 		// }
 	};
+	
+	this.output = function(){
+		return {
+			direction: this.direction,
+			position: this.positoin,
+			speed: this.speed,
+			pressed: this.pressed
+		};
+	}
+	
+	this.input = function(data){
+		for(var i in data.direction){
+			for(var j in data.direction[i]){
+				this.direction[i][j] = data.direction[i][j];
+			}
+		}
+		for(var i in data.speed){
+			this.speed[i] = data.speed[i];
+		}
+		for(var i in data.position){
+			this.position[i] = data.position[i];
+		}
+		this.pressed = data.pressed;
+	}
 };

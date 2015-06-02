@@ -1,9 +1,57 @@
-function MpManager(){
-	/*this.socket = io.connect('localhost:8080');
+function MpManager(plane, manager){
+	this.socket = io.connect('192.168.1.20:8080');
 	
-	socket.on('asdf', function (data) {
-		console.log(data);
-		socket.emit('my other event', {my:'data'});
-	});
-	socket.emit('my other event', {my:'data'});*/
+	this.socket.emit('join', {name: prompt('Please enter your name', 'Dinges')});
+	this.settings = {};
+	this.plane = plane;
+	this.planes = [];
+	this.manager = manager;
+	
+	this.socket.on('player-list', $.proxy(function(data){
+		data = data.data;
+		$('.player-list').html('');
+		for(var i in data){
+			if(data[i].id != this.settings.id){
+				$('.player-list').append($('<p data-id="'+data[i].id+'">'+data[i].name+'</p>'));
+				if(this.planes[data[i].id] == undefined){
+					this.planes[data[i].id] = new Plane(new THREE.Mesh(this.plane.plane.geometry.clone(), this.plane.plane.material.clone()), new THREE.PerspectiveCamera());
+					this.manager.objects.push(this.planes[data[i].id]);
+					this.manager.scene.add(this.planes[data[i].id].plane);
+				}
+			}
+			else{
+				$('.player-list').append($('<p class="me">'+data[i].name+'</p>'));
+			}
+		}
+		for(var i in this.planes){
+			var found = false;
+			for(var j in data){
+				if(i == data[j].id){
+					found = true;
+				}
+			}
+			if(found == false){
+				this.manager.scene.remove(this.planes[i].plane);
+				delete this.planes[i];
+			}
+		}
+	}, this));
+	
+	this.socket.on('settings', $.proxy(function(data){
+		this.settings = data;
+	}, this));
+	
+	setInterval($.proxy(function(){
+		this.socket.emit('data', this.plane.output());
+	}, this), 200);
+	
+	this.socket.on('data', $.proxy(function(data){
+		data = data.data;
+		for(var i in data){
+			if(this.planes[data[i].id] != undefined){
+				this.planes[data[i].id].input(data[i].data);
+			}
+		}
+	}, this));
+	/*socket.emit('my other event', {my:'data'});*/
 }
