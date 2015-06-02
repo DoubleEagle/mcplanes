@@ -39,6 +39,6 @@ function Vector(x,y,z){
 	}
 	
 	function getLength(){
-		return Math.pow(this.x*this.x+this.y*this.y+this.z*this.z, .5);
+		return Math.pow(this.x * this.x + this.y * this.y + this.z * this.z, .5);
 	}
 }
