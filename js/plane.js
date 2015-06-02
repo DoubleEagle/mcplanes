@@ -52,8 +52,8 @@ function Plane(plane, camera){
 	this.step = function(step){
 		var geometryright = new THREE.Geometry();
 		var geometryleft = new THREE.Geometry();
-		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(5)).toThree());
-		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-5)).toThree());
+		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
+		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
 		//pitch
 		if(this.pressed[87]){
 			rotate(this.direction.roll, this.direction.yaw, -1*step/1000);
@@ -124,8 +124,8 @@ function Plane(plane, camera){
 		if(this.pressed[39]){
 			this.b -= .1;
 		}
-		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(5)).toThree());
-		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-5)).toThree());
+		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
+		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
 		var lineright = new THREE.Line(geometryright, material);
 		var lineleft = new THREE.Line(geometryleft, material);
 		manager.scene.add(lineright);
