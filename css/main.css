@@ -22,3 +22,6 @@ canvas {
 	margin: 0px;
 	text-align: center;
 }
+.player-list .me{
+	color: #8888FF;
+}
