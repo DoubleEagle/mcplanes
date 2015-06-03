@@ -14,7 +14,6 @@ function MpManager(plane, manager){
 			if(data[i].id != this.settings.id){
 				$('.player-list').append($('<p data-id="'+data[i].id+'">'+data[i].name+' <span></span></p>').click($.proxy(function(e){
 					e.stopPropagation();
-					console.log();
 					this.plane.input(this.planes[$(e.target).data('id')].output());
 				}, this)));
 				if(this.planes[data[i].id] == undefined){
