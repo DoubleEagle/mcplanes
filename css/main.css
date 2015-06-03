@@ -32,6 +32,9 @@ canvas {
 	color: #FFFFFF;
 	padding: 10px;
 }
+.player-list p:not(.me){
+	cursor: pointer;
+}
 .player-list .me{
 	color: #8888FF;
 }

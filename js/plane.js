@@ -163,7 +163,8 @@ function Plane(plane, camera){
 			direction: this.direction,
 			position: this.position,
 			speed: this.speed,
-			pressed: this.pressed
+			pressed: this.pressed,
+			throttle: this.throttle
 		};
 	}
 	
@@ -180,5 +181,6 @@ function Plane(plane, camera){
 			this.position[i] = data.position[i];
 		}
 		this.pressed = data.pressed;
+		this.throttle = data.throttle;
 	}
 };

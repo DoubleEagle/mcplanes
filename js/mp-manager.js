@@ -12,7 +12,9 @@ function MpManager(plane, manager){
 		$('.player-list').html('');
 		for(var i in data){
 			if(data[i].id != this.settings.id){
-				$('.player-list').append($('<p data-id="'+data[i].id+'">'+data[i].name+' <span></span></p>'));
+				$('.player-list').append($('<p data-id="'+data[i].id+'">'+data[i].name+' <span></span></p>')).click($.proxy(function(e){
+					this.plane.input(this.planes[$(e.target).data('id')].output());
+				}, this));
 				if(this.planes[data[i].id] == undefined){
 					var mesh = new THREE.Mesh(this.plane.plane.geometry.clone(), this.plane.plane.material.clone());
 					mesh.modelName = this.plane.modelName;
