@@ -126,15 +126,15 @@ function Plane(plane, camera){
 		}
 		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
 		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-		var lineright = new THREE.Line(geometryright, material);
-		var lineleft = new THREE.Line(geometryleft, material);
-		manager.scene.add(lineright);
-		manager.scene.add(lineleft);
-		this.lines.push(lineright);		
-		this.lines.push(lineleft);
-		while(this.lines.length > 500){
-			manager.scene.remove(this.lines.shift());
-		};
+		// var lineright = new THREE.Line(geometryright, material);
+		// var lineleft = new THREE.Line(geometryleft, material);
+		// manager.scene.add(lineright);
+		// manager.scene.add(lineleft);
+		// this.lines.push(lineright);		
+		// this.lines.push(lineleft);
+		// while(this.lines.length > 500){
+			// manager.scene.remove(this.lines.shift());
+		// };
 		this.camera.rotation.setEulerFromRotationMatrix(camRotation, 'XYZ');
 		if(this.main){
 			$("div.info").html(
