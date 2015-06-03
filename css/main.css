@@ -11,7 +11,7 @@ canvas {
 .side-bar{
 	height: calc(100% - 20px);
 	background-color: rgba(0, 0, 0, 0.3);
-	width: 100px;
+	width: 150px;
 	position: absolute;
 	top: 0px;
 	left: 0px;

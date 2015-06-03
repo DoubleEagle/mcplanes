@@ -35,16 +35,16 @@ io.sockets.on('connection', function(socket){
 	socket.on('data', function(data){
 		players[socket.client.conn.id].data = data;
 	});
-	
-	setInterval(function(){
-		var data = [];
-		for(var i in players){
-			data.push({id: i, data: players[i].data});
-		}
-		console.log(data);
-		io.sockets.emit('data', {data: data});
-	}, 200);
 });
+	
+setInterval(function(){
+	var data = [];
+	for(var i in players){
+		data.push({id: i, data: players[i].data});
+	}
+	console.log(data);
+	io.sockets.emit('data', {data: data});
+}, 200);
 
 function playerList(){
 	var list = [];

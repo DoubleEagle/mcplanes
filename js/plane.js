@@ -142,8 +142,12 @@ function Plane(plane, camera){
 				"altitude (m):   " + (Math.round((this.position.z + 50)*100)/100) + "<br>" +
 				"throttle (%):   " + (Math.round(this.throttle * 10000)/100) + "<br>" +
 				"horizontal speed (m/s):   " + (Math.round(Math.pow(this.speed.x * this.speed.x + this.speed.y * this.speed.y, .5)*100)/100) + "<br>" +
-				"vertical speed (m/s):   " + (Math.round(this.speed.z*100)/100)
+				"vertical speed (m/s):   " + (Math.round(this.speed.z*100)/100) + '<br />' +
+				"position (m):   ("+Math.round(this.position.x)+', '+Math.round(this.position.y)+', '+Math.round(this.position.z)+')'
 			);
+		}
+		else{
+			$('.player-list [data-id="'+this.id+'"] span').html('('+Math.round(this.position.x)+', '+Math.round(this.position.y)+', '+Math.round(this.position.z)+')');
 		}
 		// if(this.position.z < -50){
 			// this.direction.roll.z = -this.direction.roll.z;
@@ -157,7 +161,7 @@ function Plane(plane, camera){
 	this.output = function(){
 		return {
 			direction: this.direction,
-			position: this.positoin,
+			position: this.position,
 			speed: this.speed,
 			pressed: this.pressed
 		};
