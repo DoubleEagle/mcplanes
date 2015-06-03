@@ -18,7 +18,7 @@ function MpManager(plane, manager){
 				}, this)));
 				if(this.planes[data[i].id] == undefined){
 					var mesh = new THREE.Mesh(this.plane.plane.geometry.clone(), this.plane.plane.material.clone());
-					mesh.modelName = this.plane.modelName;
+					mesh.modelName = this.plane.plane.modelName;
 					this.planes[data[i].id] = new Plane(mesh, new THREE.PerspectiveCamera());
 					this.planes[data[i].id].id = data[i].id;
 					this.manager.objects.push(this.planes[data[i].id]);
