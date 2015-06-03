@@ -50,10 +50,12 @@ function Plane(plane, camera){
 	});
 	
 	this.step = function(step){
+		//flares initial
 		var geometryright = new THREE.Geometry();
 		var geometryleft = new THREE.Geometry();
 		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
 		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
+		
 		//pitch
 		if(this.pressed[87]){
 			rotate(this.direction.roll, this.direction.yaw, -1*step/1000);
@@ -61,7 +63,6 @@ function Plane(plane, camera){
 		if(this.pressed[83]){
 			rotate(this.direction.roll, this.direction.yaw, 1*step/1000);
 		};
-		
 		//roll
 		if(this.pressed[69]){
 			rotate(this.direction.pitch, this.direction.yaw, -2*step/1000);
@@ -69,7 +70,6 @@ function Plane(plane, camera){
 		if(this.pressed[81]){
 			rotate(this.direction.pitch, this.direction.yaw, 2*step/1000);
 		};
-		
 		//yaw
 		if(this.pressed[68]){
 			rotate(this.direction.roll, this.direction.pitch, .2*step/1000);
@@ -77,7 +77,6 @@ function Plane(plane, camera){
 		if(this.pressed[65]){
 			rotate(this.direction.roll, this.direction.pitch, -.2*step/1000);
 		};
-		
 		//throttle
 		if(this.pressed[82]){
 			if(this.throttle < 1){
@@ -110,6 +109,7 @@ function Plane(plane, camera){
 		var camRotation = new THREE.Matrix4();
 		camRotation.set(this.direction.pitch.x, this.direction.yaw.x, -this.direction.roll.x, 0, this.direction.pitch.y, this.direction.yaw.y, -this.direction.roll.y, 0, this.direction.pitch.z, this.direction.yaw.z, -this.direction.roll.z, 0, 0, 0, 0, 1);
 		
+		//camera controls
 		this.camera.position = this.position.clone().add(this.direction.roll.clone().multiply(this.a)).add(this.direction.yaw.clone().multiply(this.b)).toThree();
 		if(this.pressed[38]){
 			this.a -= .1;
@@ -117,24 +117,13 @@ function Plane(plane, camera){
 		if(this.pressed[40]){
 			this.a += .1;
 		}
-
 		if(this.pressed[37]){
 			this.b += .1;
 		}
 		if(this.pressed[39]){
 			this.b -= .1;
 		}
-		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-		var lineright = new THREE.Line(geometryright, material);
-		var lineleft = new THREE.Line(geometryleft, material);
-		manager.scene.add(lineright);
-		manager.scene.add(lineleft);
-		this.lines.push(lineright);		
-		this.lines.push(lineleft);
-		while(this.lines.length > 500){
-			manager.scene.remove(this.lines.shift());
-		};
+
 		this.camera.rotation.setEulerFromRotationMatrix(camRotation, 'XYZ');
 		if(this.main){
 			$("div.info").html(
@@ -156,6 +145,19 @@ function Plane(plane, camera){
 			// this.speed.z = -this.speed.z;
 			// this.position.z = -100-this.position.z;
 		// }
+		
+		//flares draw
+		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
+		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
+		var lineright = new THREE.Line(geometryright, material);
+		var lineleft = new THREE.Line(geometryleft, material);
+		manager.scene.add(lineright);
+		manager.scene.add(lineleft);
+		this.lines.push(lineright);		
+		this.lines.push(lineleft);
+		while(this.lines.length > 500){
+			manager.scene.remove(this.lines.shift());
+		};
 	};
 	
 	this.output = function(){
@@ -189,7 +191,6 @@ function Plane(plane, camera){
 			this.pressed = data.pressed;
 			this.throttle = data.throttle;
 		}
-		
 		
 		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
 		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
