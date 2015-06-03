@@ -169,18 +169,38 @@ function Plane(plane, camera){
 	}
 	
 	this.input = function(data){
-		for(var i in data.direction){
-			for(var j in data.direction[i]){
-				this.direction[i][j] = data.direction[i][j];
+		var geometryright = new THREE.Geometry();
+		var geometryleft = new THREE.Geometry();
+		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
+		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
+		
+		if(data != undefined){
+			for(var i in data.direction){
+				for(var j in data.direction[i]){
+					this.direction[i][j] = data.direction[i][j];
+				}
 			}
+			for(var i in data.speed){
+				this.speed[i] = data.speed[i];
+			}
+			for(var i in data.position){
+				this.position[i] = data.position[i];
+			}
+			this.pressed = data.pressed;
+			this.throttle = data.throttle;
 		}
-		for(var i in data.speed){
-			this.speed[i] = data.speed[i];
-		}
-		for(var i in data.position){
-			this.position[i] = data.position[i];
-		}
-		this.pressed = data.pressed;
-		this.throttle = data.throttle;
+		
+		
+		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
+		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
+		var lineright = new THREE.Line(geometryright, material);
+		var lineleft = new THREE.Line(geometryleft, material);
+		manager.scene.add(lineright);
+		manager.scene.add(lineleft);
+		this.lines.push(lineright);		
+		this.lines.push(lineleft);
+		while(this.lines.length > 500){
+			manager.scene.remove(this.lines.shift());
+		};
 	}
 };
