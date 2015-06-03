@@ -43,7 +43,7 @@ setInterval(function(){
 		data.push({id: i, data: players[i].data});
 	}
 	io.sockets.emit('data', {data: data});
-}, 200);
+}, 50);
 
 function playerList(){
 	var list = [];

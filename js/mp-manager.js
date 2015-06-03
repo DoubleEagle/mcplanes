@@ -51,7 +51,7 @@ function MpManager(plane, manager){
 	
 	setInterval($.proxy(function(){
 		this.socket.emit('data', this.plane.output());
-	}, this), 200);
+	}, this), 50);
 	
 	this.socket.on('data', $.proxy(function(data){
 		data = data.data;
@@ -83,7 +83,9 @@ function createName(){
 		'silver',
 		'tooth',
 		'sauce',
-		'air'
+		'air',
+		'ham',
+		'thunder'
 	];
 	var third = [
 		'fly',
@@ -95,7 +97,9 @@ function createName(){
 		'paste',
 		'pan',
 		'pick',
-		'plane'
+		'plane',
+		'burger',
+		'storm'
 	];
 	return first[Math.floor(Math.random()*first.length)]+' '+
 		second[Math.floor(Math.random()*second.length)]+
