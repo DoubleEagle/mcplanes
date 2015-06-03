@@ -62,14 +62,14 @@ function MpManager(plane, manager){
 
 function createName(){
 	var first = [
-		'epic',
-		'gloomy',
-		'great',
-		'small',
-		'black',
-		'noisy',
-		'fast',
-		'nerdo'
+		'Epic',
+		'Gloomy',
+		'Great',
+		'Small',
+		'Black',
+		'Noisy',
+		'Fast',
+		'Nerdo'
 	];
 	var second = [
 		'butter',
