@@ -1,7 +1,7 @@
 function MpManager(plane, manager){
 	this.socket = io.connect('192.168.0.20:8080');
 	
-	this.socket.emit('join', {name: prompt('Please enter your name', 'Dinges')});
+	this.socket.emit('join', {name: prompt('Please enter your name', createName())});
 	this.settings = {};
 	this.plane = plane;
 	this.planes = [];
@@ -33,6 +33,7 @@ function MpManager(plane, manager){
 			}
 			if(found == false){
 				this.manager.scene.remove(this.planes[i].plane);
+				this.manager.objects.splice(this.manager.objects.indexOf(this.planes[i]), i);
 				delete this.planes[i];
 			}
 		}
@@ -55,4 +56,41 @@ function MpManager(plane, manager){
 		}
 	}, this));
 	/*socket.emit('my other event', {my:'data'});*/
+}
+
+function createName(){
+	var first = [
+		'epic',
+		'gloomy',
+		'great',
+		'small',
+		'black',
+		'noisy',
+		'fast',
+		'nerdo'
+	];
+	var second = [
+		'butter',
+		'moon',
+		'fire',
+		'base',
+		'grand',
+		'silver',
+		'tooth',
+		'sauce'
+	];
+	var third = [
+		'fly',
+		'light',
+		'man',
+		'ball',
+		'mother',
+		'smith',
+		'paste',
+		'pan',
+		'pick'
+	];
+	return first[Math.floor(Math.random()*first.length)]+' '+
+		second[Math.floor(Math.random()*second.length)]+
+		third[Math.floor(Math.random()*third.length)]+' '+
 }
