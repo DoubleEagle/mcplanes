@@ -41,10 +41,12 @@ function Manager(){
 		this.camera.rotation.z = Math.PI;
 		this.camera.rotation.x = Math.PI+Math.PI/2*1.3;
 		this.camera.position.z = 10;
-		this.load('models/plane01.json',
+		var modelName = 'models/plane01.json';
+		this.load(modelName,
 			$.proxy(function(geometry, material){
 				this.planeGeometry = geometry.clone();
 				var mesh = new THREE.Mesh(geometry, material);
+				mesh.modelName = modelName;
 				this.scene.add(mesh);
 				var plane = new Plane(mesh, this.camera);
 				plane.main = true;

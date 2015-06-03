@@ -14,7 +14,9 @@ function MpManager(plane, manager){
 			if(data[i].id != this.settings.id){
 				$('.player-list').append($('<p data-id="'+data[i].id+'">'+data[i].name+' <span></span></p>'));
 				if(this.planes[data[i].id] == undefined){
-					this.planes[data[i].id] = new Plane(new THREE.Mesh(this.plane.plane.geometry.clone(), this.plane.plane.material.clone()), new THREE.PerspectiveCamera());
+					var mesh = new THREE.Mesh(this.plane.plane.geometry.clone(), this.plane.plane.material.clone());
+					mesh.modelName = this.plane.modelName;
+					this.planes[data[i].id] = new Plane(mesh, new THREE.PerspectiveCamera());
 					this.planes[data[i].id].id = data[i].id;
 					this.manager.objects.push(this.planes[data[i].id]);
 					this.manager.scene.add(this.planes[data[i].id].plane);
