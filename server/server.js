@@ -36,7 +36,7 @@ io.sockets.on('connection', function(socket){
 		players[socket.client.conn.id].data = data;
 	});
 });
-	
+
 setInterval(function(){
 	var data = [];
 	for(var i in players){
@@ -44,6 +44,8 @@ setInterval(function(){
 	}
 	io.sockets.emit('data', {data: data});
 }, 50);
+
+setInterval(playerList, 2500);
 
 function playerList(){
 	var list = [];
