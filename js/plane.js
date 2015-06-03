@@ -9,7 +9,7 @@ function Plane(plane, camera){
 	this.direction.pitch.name = 'pitch';
 	this.direction.roll.name = 'roll';
 	this.direction.yaw.name = 'yaw';
-	this.throttle = 0;
+	this.throttle = 1;
 	this.plane = plane;
 	this.camera = camera;
 	this.lastMatrix = new THREE.Matrix3();
@@ -22,13 +22,31 @@ function Plane(plane, camera){
 	this.cl = .6;
 	this.cd = .05;
 	this.main = false;
-	this.lines = [];
+	this.flareleft = new THREE.Vector3(0,0,0);
+	this.flareright = new THREE.Vector3(0,0,0);
 	
 	function rotate(v1, v2, angle){
 		t1 = v1.clone();
 		t2 = v2.clone();
 		v1.copy(t1.clone().multiply(Math.cos(angle)).add(t2.clone().multiply(Math.sin(angle))));
 		v2.copy(t1.clone().multiply(Math.sin(angle)).multiply(-1).add(t2.clone().multiply(Math.cos(angle))));
+	};
+	
+	this.calcflareright = function(){
+		if(this.plane.modelName == 'models/plane01.json'){
+			return this.position.clone().add(this.direction.pitch.clone().multiply(2.6).add(this.direction.roll.clone().multiply(-0.2))).toThree();
+		}
+		if(this.plane.modelName == 'models/plane02.2.json'){
+			return this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree();
+		}	
+	};
+	this.calcflareleft = function(){
+		if(this.plane.modelName == 'models/plane01.json'){
+			return this.position.clone().add(this.direction.pitch.clone().multiply(-2.6).add(this.direction.roll.clone().multiply(-0.2))).toThree();
+		}
+		if(this.plane.modelName == 'models/plane02.2.json'){
+			return this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree();
+		}
 	};
 	
 	this.pressed = [];
@@ -44,18 +62,25 @@ function Plane(plane, camera){
 		}
 	},this));
 	
-	var renderer = new THREE.WebGLRenderer();
 	var material = new THREE.LineBasicMaterial({
 		color: 0xffffff,
 	});
+	this.geometryright = new THREE.Geometry();
+	this.geometryleft = new THREE.Geometry();
+	for(i=0; i<300; i++){
+		this.geometryright.vertices.push(
+			new THREE.Vector3(0,0,0)
+		);
+		this.geometryleft.vertices.push(
+			new THREE.Vector3(0,0,0)
+		);
+	};
+	var lineright = new THREE.Line(this.geometryright, material);
+	var lineleft = new THREE.Line(this.geometryleft, material);
+	manager.scene.add(lineright);
+	manager.scene.add(lineleft);
 	
 	this.step = function(step){
-		//flares initial
-		var geometryright = new THREE.Geometry();
-		var geometryleft = new THREE.Geometry();
-		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-		
 		//pitch
 		if(this.pressed[87]){
 			rotate(this.direction.roll, this.direction.yaw, -1*step/1000);
@@ -147,17 +172,12 @@ function Plane(plane, camera){
 		// }
 		
 		//flares draw
-		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-		var lineright = new THREE.Line(geometryright, material);
-		var lineleft = new THREE.Line(geometryleft, material);
-		manager.scene.add(lineright);
-		manager.scene.add(lineleft);
-		this.lines.push(lineright);		
-		this.lines.push(lineleft);
-		while(this.lines.length > 500){
-			manager.scene.remove(this.lines.shift());
-		};
+		this.geometryright.vertices.push(this.calcflareright());
+		this.geometryleft.vertices.push(this.calcflareleft());
+		this.geometryright.verticesNeedUpdate = true;
+		this.geometryleft.verticesNeedUpdate = true;
+		this.geometryright.vertices.shift();
+		this.geometryleft.vertices.shift();
 	};
 	
 	this.output = function(){
@@ -171,10 +191,10 @@ function Plane(plane, camera){
 	}
 	
 	this.input = function(data){
-		var geometryright = new THREE.Geometry();
-		var geometryleft = new THREE.Geometry();
-		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
+//		var geometryright = new THREE.Geometry();
+//		var geometryleft = new THREE.Geometry();
+//		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
+//		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
 		
 		if(data != undefined){
 			for(var i in data.direction){
@@ -192,16 +212,18 @@ function Plane(plane, camera){
 			this.throttle = data.throttle;
 		}
 		
-		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-		var lineright = new THREE.Line(geometryright, material);
-		var lineleft = new THREE.Line(geometryleft, material);
-		manager.scene.add(lineright);
-		manager.scene.add(lineleft);
-		this.lines.push(lineright);		
-		this.lines.push(lineleft);
-		while(this.lines.length > 500){
-			manager.scene.remove(this.lines.shift());
-		};
+//		this.geometryright.vertices.push(calcflareright());
+//		this.geometryleft.vertices.push(calcflareleft());
+//		this.geometryright.verticesNeedUpdate = true;
+//		this.geometryleft.verticesNeedUpdate = true;
+//		var lineright = new THREE.Line(geometryright, material);
+//		var lineleft = new THREE.Line(geometryleft, material);
+//		manager.scene.add(lineright);
+//		manager.scene.add(lineleft);
+//		this.lines.push(lineright);		
+//		this.lines.push(lineleft);
+//		while(this.lines.length > 500){
+//			manager.scene.remove(this.lines.shift());
+//		};
 	}
 };
