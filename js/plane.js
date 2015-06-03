@@ -137,12 +137,8 @@ function Plane(plane, camera){
 			// ,this.speed,
 			// ,this.direction.roll
 			// ,this.speed.clone().normalize().x * this.direction.roll.x + this.speed.clone().normalize().y * this.direction.roll.y + this.speed.clone().normalize().z * this.direction.roll.z
-			,this.speed.clone().normalize()
+			// this.speed.clone().normalize()
 		)};
-		
-		
-		
-		
 		
 		this.g.z = -9.81;
 		this.thrust = this.direction.roll.clone().multiply(this.maxthrust*this.throttle);
