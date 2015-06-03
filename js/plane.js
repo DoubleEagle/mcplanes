@@ -122,7 +122,28 @@ function Plane(plane, camera){
 		
 		this.lastMatrix = matrix;
 		
-		this.lift = this.direction.yaw.clone().multiply(this.speed.getLength()*this.cl);
+		this.lift = this.direction.yaw.clone().multiply(Math.pow(this.speed.getLength(), 1)
+		// *Math.sin(Math.acos(this.speed.clone().normalize().x * this.direction.roll.x + this.speed.clone().normalize().y * this.direction.roll.y + this.speed.clone().normalize().z * this.direction.roll.z))
+		*this.cl);
+		
+		// if(this.main){console.log((this.speed.clone().normalize().x * this.direction.roll.x + this.speed.clone().normalize().y * this.direction.roll.y + this.speed.z * this.direction.roll.clone().normalize().z));};
+		if(this.main){console.log(
+			// this.direction.roll.getLength()
+			// ,this.speed.clone().normalize().getLength()
+			// ,this.speed.clone().normalize()
+			// ,this.speed.clone().normalize().x * this.direction.roll.x + this.speed.clone().normalize().y * this.direction.roll.y + this.speed.clone().normalize().z * this.direction.roll.z
+			// ,Math.sin(Math.acos(this.speed.clone().normalize().x * this.direction.roll.x + this.speed.clone().normalize().y * this.direction.roll.y + this.speed.clone().normalize().z * this.direction.roll.z)*180/Math.PI)
+			// ,this.lift
+			// ,this.speed,
+			// ,this.direction.roll
+			// ,this.speed.clone().normalize().x * this.direction.roll.x + this.speed.clone().normalize().y * this.direction.roll.y + this.speed.clone().normalize().z * this.direction.roll.z
+			,this.speed.clone().normalize()
+		)};
+		
+		
+		
+		
+		
 		this.g.z = -9.81;
 		this.thrust = this.direction.roll.clone().multiply(this.maxthrust*this.throttle);
 		this.drag = this.speed.clone().multiply(this.speed.clone().getLength()*-1*this.cd);
