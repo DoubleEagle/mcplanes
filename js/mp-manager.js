@@ -79,7 +79,8 @@ function createName(){
 		'grand',
 		'silver',
 		'tooth',
-		'sauce'
+		'sauce',
+		'air'
 	];
 	var third = [
 		'fly',
@@ -90,9 +91,10 @@ function createName(){
 		'smith',
 		'paste',
 		'pan',
-		'pick'
+		'pick',
+		'plane'
 	];
 	return first[Math.floor(Math.random()*first.length)]+' '+
 		second[Math.floor(Math.random()*second.length)]+
-		third[Math.floor(Math.random()*third.length)]+' '+
+		third[Math.floor(Math.random()*third.length)];
 }

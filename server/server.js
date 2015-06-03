@@ -42,7 +42,6 @@ setInterval(function(){
 	for(var i in players){
 		data.push({id: i, data: players[i].data});
 	}
-	console.log(data);
 	io.sockets.emit('data', {data: data});
 }, 200);
 
