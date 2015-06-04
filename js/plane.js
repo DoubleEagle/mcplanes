@@ -22,7 +22,7 @@ function Plane(plane, camera){
 	this.maxthrust = 10;
 	this.cl = .1;
 	this.cvl = .008;
-	this.cd = .001;
+	this.cd = .0001;
 	this.main = false;
 	this.flareleft = new THREE.Vector3(0,0,0);
 	this.flareright = new THREE.Vector3(0,0,0);
