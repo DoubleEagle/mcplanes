@@ -75,7 +75,8 @@ function createName(){
 		'Black',
 		'Noisy',
 		'Fast',
-		'Nerdo'
+		'Nerdo',
+		'Fat'
 	];
 	var second = [
 		'butter',
@@ -102,7 +103,8 @@ function createName(){
 		'pick',
 		'plane',
 		'burger',
-		'storm'
+		'storm',
+		'ster'
 	];
 	return first[Math.floor(Math.random()*first.length)]+' '+
 		second[Math.floor(Math.random()*second.length)]+

@@ -10,7 +10,7 @@ function handler(req, res){}
 
 players = [];
 
-var environment = env.vectorenGeneration(9);
+var environment = env.vectorenGeneration(8);
 
 io.sockets.on('connection', function(socket){
 	socket.on('join', function(data){
@@ -18,9 +18,9 @@ io.sockets.on('connection', function(socket){
 		players[socket.client.conn.id].id = socket.client.conn.id;
 		
 		socket.emit('settings', {id: socket.client.conn.id});
-		socket.emit('env-data', {environment: environment});
-		
 		playerList();
+		planeList();
+		setTimeout(function(){socket.emit('env-data', {environment: environment})}, 1000);
 		
 		console.log(data.name + ' joined!');
 	});
@@ -41,15 +41,8 @@ io.sockets.on('connection', function(socket){
 	});
 });
 
-setInterval(function(){
-	var planes = [];
-	for(var i in players){
-		planes.push({id: i, data: players[i].data});
-	}
-	io.sockets.emit('plane-data', {planes: planes});
-}, 50);
-
 setInterval(playerList, 2500);
+setInterval(planeList, 50);
 
 function playerList(){
 	var list = [];
@@ -57,4 +50,12 @@ function playerList(){
 		list.push({name: players[i].name, id: players[i].id});
 	}
 	io.sockets.emit('player-list', {data: list});
+}
+
+function planeList(){
+	var planes = [];
+	for(var i in players){
+		planes.push({id: i, data: players[i].data});
+	}
+	io.sockets.emit('plane-data', {planes: planes});
 }
