@@ -119,25 +119,30 @@ function Environment(manager) {
 
     };
 
-    //Cube mapping
-    var urls = ["images/posx.png", "images/negx.png",
-        "images/posy.png", "images/negy.png",
-        "images/posz.png", "images/negz.png"];
-    var materials = [];
-    for (var i in urls) {
-        materials.push(
-                new THREE.MeshBasicMaterial({
-            map: THREE.ImageUtils.loadTexture(urls[i]),
-            side: THREE.DoubleSide,
-            depthWrite: false
-        })
-                );
-    }
-    this.skybox = new THREE.Mesh(new THREE.CubeGeometry(1000, 1000, 1000), new THREE.MeshFaceMaterial(materials));
-    this.manager.scene.add(this.skybox);
-    this.step = function(step) {
-        if (manager.plane) {
-            this.skybox.position = this.manager.plane.position.toThree();
-        }
-    }
+    //DRAW PLANE
+//    setInterval($.proxy(function() {
+//        console.log(this.manager.plane);
+//    }, this), 50);
+    
+	//Cube mapping
+	var urls = ["images/posx.png", "images/negx.png",
+	"images/posy.png", "images/negy.png",
+	"images/posz.png", "images/negz.png"];
+	var materials = [];
+	for(var i in urls){
+		materials.push(
+			new THREE.MeshBasicMaterial({
+				map: THREE.ImageUtils.loadTexture(urls[i]),
+				side: THREE.DoubleSide,
+				depthWrite: false
+			})
+		);
+	}
+	this.skybox = new THREE.Mesh( new THREE.CubeGeometry(5000, 5000, 5000), new THREE.MeshFaceMaterial( materials));
+	this.manager.scene.add( this.skybox );
+	this.step = function(step){
+		if(manager.plane){
+			this.skybox.position = this.manager.plane.position.toThree();
+		}
+	}
 }
