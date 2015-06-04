@@ -39,19 +39,21 @@ function Environment(manager) {
                 geometry.vertices.push(new THREE.Vector3(x * scale, y * scale, vectoren[x][y]));
 //                geometry.colors.push(new THREE.Color(0x00ff00));
                 if (vectoren[x][y] < 0) {
-                    console.log(lowestZ);
+                    
                     var red = Math.floor(100 - ((vectoren[x][y] * -1) * 100 / (lowestZ * -1)));
                     var green = Math.floor((vectoren[x][y] * -1) * 200 / (lowestZ * -1) + 55);
                     var val = Math.floor(((vectoren[x][y]) * -1) * 255 / (lowestZ * -1));
                     geometry.colors.push(new THREE.Color('rgb(' + red + ',' + green + ',0)'));
-                    console.log(vectoren[x][y]);
-                    console.log('rgb(' + red + ',' + green + ',0)');
-                } else {
-                    var blue = Math.floor(((vectoren[x][y])) * 255 / (lowestZ));
-                    var red = Math.floor(100 + vectoren[x][y]*155/lowestZ);
-                    var green = Math.floor(55 + vectoren[x][y]*200/lowestZ);
                     
-                    geometry.colors.push(new THREE.Color('rgb(' + val + ',0,0)'));
+                } else {
+                    console.log(lowestZ);
+                    var blue = Math.floor(((vectoren[x][y])) * 255 / (lowestZ));
+                    var red = Math.floor(100 + vectoren[x][y] * 155 / lowestZ);
+                    var green = Math.floor(55 + vectoren[x][y] * 200 / lowestZ);
+
+                    geometry.colors.push(new THREE.Color('rgb(' + red + ',' + green + ',' + blue + ')'));
+                    console.log(vectoren[x][y]);
+                    console.log('rgb(' + red + ',' + green + ',' + blue + ')');
                 }
             }
         }
@@ -122,26 +124,26 @@ function Environment(manager) {
 //    setInterval($.proxy(function() {
 //        console.log(this.manager.plane);
 //    }, this), 50);
-    
-	//Cube mapping
-	var urls = ["images/posx.png", "images/negx.png",
-	"images/posy.png", "images/negy.png",
-	"images/posz.png", "images/negz.png"];
-	var materials = [];
-	for(var i in urls){
-		materials.push(
-			new THREE.MeshBasicMaterial({
-				map: THREE.ImageUtils.loadTexture(urls[i]),
-				side: THREE.DoubleSide,
-				depthWrite: false
-			})
-		);
-	}
-	this.skybox = new THREE.Mesh( new THREE.CubeGeometry(5000, 5000, 5000), new THREE.MeshFaceMaterial( materials));
-	this.manager.scene.add( this.skybox );
-	this.step = function(step){
-		if(manager.plane){
-			this.skybox.position = this.manager.plane.position.toThree();
-		}
-	}
+
+    //Cube mapping
+    var urls = ["images/posx.png", "images/negx.png",
+        "images/posy.png", "images/negy.png",
+        "images/posz.png", "images/negz.png"];
+    var materials = [];
+    for (var i in urls) {
+        materials.push(
+                new THREE.MeshBasicMaterial({
+            map: THREE.ImageUtils.loadTexture(urls[i]),
+            side: THREE.DoubleSide,
+            depthWrite: false
+        })
+                );
+    }
+    this.skybox = new THREE.Mesh(new THREE.CubeGeometry(5000, 5000, 5000), new THREE.MeshFaceMaterial(materials));
+    this.manager.scene.add(this.skybox);
+    this.step = function(step) {
+        if (manager.plane) {
+            this.skybox.position = this.manager.plane.position.toThree();
+        }
+    }
 }
