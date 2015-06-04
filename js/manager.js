@@ -5,11 +5,11 @@ function Manager(){
 
 	this.objects = [];
 	
-	this.attMeter = $('.att-meter')[0];
+	/*this.attMeter = $('.att-meter')[0];
 	this.attMeter.ctx = this.attMeter.getContext('2d');
 	this.attMeter.horizon = $('.att-meter .horizon')[0];
 	this.attMeter.horizon.ctx = this.attMeter.horizon.getContext('2d');
-	this.attMeter.overlay = $('.att-meter .overlay')[0];
+	this.attMeter.overlay = $('.att-meter .overlay')[0];*/
 	
 	this.init3d();
 	
