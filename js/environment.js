@@ -40,21 +40,16 @@ function Environment(manager) {
                 geometry.vertices.push(new THREE.Vector3(x * scale, y * scale, vectoren[x][y]));
 //                geometry.colors.push(new THREE.Color(0x00ff00));
                 if (vectoren[x][y] < 0) {
-                    
                     var red = Math.floor(100 - ((vectoren[x][y] * -1) * 100 / (lowestZ * -1)));
                     var green = Math.floor((vectoren[x][y] * -1) * 200 / (lowestZ * -1) + 55);
                     var val = Math.floor(((vectoren[x][y]) * -1) * 255 / (lowestZ * -1));
                     geometry.colors.push(new THREE.Color('rgb(' + red + ',' + green + ',0)'));
                     
                 } else {
-                    console.log(lowestZ);
                     var blue = Math.floor(((vectoren[x][y])) * 255 / (heighestZ));
                     var red = Math.floor(100 + vectoren[x][y] * 155 / heighestZ);
                     var green = Math.floor(55 + vectoren[x][y] * 200 / heighestZ);
-
                     geometry.colors.push(new THREE.Color('rgb(' + red + ',' + green + ',' + blue + ')'));
-                    console.log(vectoren[x][y]);
-                    console.log('rgb(' + red + ',' + green + ',' + blue + ')');
                 }
             }
         }
