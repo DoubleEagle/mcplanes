@@ -9,6 +9,7 @@ function Environment(manager) {
 
     });
     this.manager = manager;
+	var banner = $('.banners').append('<p class="banner">Loading environment...</p>');
     //TERRAIN GENERATION AND HEIGHTMAP
     this.input = function(vectoren) {
         var normal = new THREE.Vector3(0, 1, 0);
@@ -117,7 +118,8 @@ function Environment(manager) {
                 ctx.stroke();
             }
         }, this), 50);
-
+		
+		banner.remove();
     };
 
     //DRAW PLANE
