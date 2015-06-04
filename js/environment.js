@@ -90,15 +90,9 @@ function Environment(manager) {
     };
 
     //DRAW PLANE
-<<<<<<< HEAD
-    setInterval($.proxy(function() {
-//		console.log(this.manager.plane);
-    }, this), 50);
-=======
 //    setInterval($.proxy(function() {
 //        console.log(this.manager.plane);
 //    }, this), 50);
->>>>>>> 2900a98fa521f854864bcebda21db2ea5c5341ae
     
 	//Cube mapping
 	var urls = ["images/posx.png", "images/negx.png",
