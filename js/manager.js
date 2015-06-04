@@ -14,6 +14,7 @@ function Manager(){
 	this.init3d();
 	
 	this.environment = new Environment(this);
+	this.objects.push(this.environment);
 	
 	this.lastDate = new Date();
 	
