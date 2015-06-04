@@ -81,12 +81,12 @@ function Plane(plane, camera){
 	});
 	this.geometryright = new THREE.Geometry();
 	this.geometryleft = new THREE.Geometry();
-	for(i=0; i<300; i++){
+	for(i=0; i<200; i++){
 		this.geometryright.vertices.push(
-			new THREE.Vector3(0,0,0)
+			new THREE.Vector3(this.position.x,this.position.y,this.position.z)
 		);
 		this.geometryleft.vertices.push(
-			new THREE.Vector3(0,0,0)
+			new THREE.Vector3(this.position.x,this.position.y,this.position.z)
 		);
 	};
 	var lineright = new THREE.Line(this.geometryright, material);
