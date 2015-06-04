@@ -216,6 +216,13 @@ function Plane(plane, camera){
 		this.geometryright.vertices.shift();
 		this.geometryleft.vertices.shift();
 		
+		//sliders
+		if (this.main){
+		$('.slider-left').css('top', Math.round( 70 - this.direction.roll.z * 20)+'%');
+		$('.slider-right').css('top', Math.round( 70 - this.direction.roll.z * 20)+'%');
+		$('.slider-top').css('left', Math.round( 50 - this.direction.pitch.z * 20)+'%');
+		};
+		
 		if(this.main){console.log(
 			// this.direction.roll.getLength()
 			// this.speed.clone().normalize().getLength()

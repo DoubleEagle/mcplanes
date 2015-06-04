@@ -53,3 +53,53 @@ canvas .game{
 	right: 5px;
 	bottom: 5px;
 }
+
+.sliderbox {
+	position: fixed;
+	display: block;
+	background-color: rgba(0,0,0,0.3);
+	border: 1px solid #FFF;
+	border-radius: 10px;
+}
+.sliderbox-top {
+	width: 40%;
+	height: 5%;
+	top: 40%;
+	left: 30%;
+}
+.sliderbox-left {
+	width: 5%;
+	height: 40%;
+	top: 50%;
+	left: 20%;
+}
+.sliderbox-right {
+	width: 5%;
+	height: 40%;
+	top: 50%;
+	left: 75%;
+}
+.slider{
+	position: fixed;
+	display: block;
+	background-color: rgba(F,F,F,1);
+	border: 1px solid #FFF;
+}
+.slider-top{
+	width: 0px;
+	height: 5%;
+	top: 40%;
+	left: 50%;
+}
+.slider-left{
+	width: 5%;
+	height: 0px;
+	top: 70%;
+	left: 20%;
+}
+.slider-right{
+	width: 5%;
+	height: 0px;
+	top: 70%;
+	left: 75%;
+}
