@@ -93,10 +93,10 @@ function Manager(){
 			ctx.fillRect(0, 0, 64, 64);
 			ctx.fillStyle = '#8888FF';
 			ctx.beginPath();
-			var angle = Math.asin(this.plane.direction.pitch.z);
-			var corner1 = {x:32 - Math.cos(angle)*96, y: 32 + this.plane.direction.roll.z*32 - this.plane.direction.pitch.z*96};
-			var corner2 = {x:32 + Math.cos(angle)*96, y: 32 + this.plane.direction.roll.z*32 + this.plane.direction.pitch.z*96};
-			var middle = 32 + this.plane.direction.roll.z*32;
+			var angle = Math.asin(this.plane.direction.pitch.z) + (Math.sign(this.plane.direction.yaw.z)-1)/2*Math.PI;
+			var middle = 32 + this.plane.direction.roll.z*32*Math.sign(this.plane.direction.yaw.z);
+			var corner1 = {x:32 - Math.cos(angle)*96, y: middle - this.plane.direction.pitch.z*96};
+			var corner2 = {x:32 + Math.cos(angle)*96, y: middle + this.plane.direction.pitch.z*96};
 			ctx.moveTo(corner1.x, corner1.y);
 			ctx.lineTo(corner2.x, corner2.y);
 			if(corner2.x > 32){
@@ -132,14 +132,14 @@ function Manager(){
 				}
 			}
 			ctx.fill();
-			/*ctx.closePath();
+			ctx.closePath();
 			ctx.globalCompositeOperation = 'destination-atop';
 			ctx.beginPath();
 			ctx.arc(32, 32, 28, 0, Math.PI*2, true);
 			ctx.fill();
-			ctx.globalCompositeOperation = 'source-over';*/
+			ctx.globalCompositeOperation = 'source-over';
 			this.attMeter.ctx.drawImage(this.attMeter.horizon, 0, 0);
-			//this.attMeter.ctx.drawImage(this.attMeter.overlay, 0, 0);
+			this.attMeter.ctx.drawImage(this.attMeter.overlay, 0, 0);
 		}
 	}
 }
