@@ -65,21 +65,40 @@ function Environment(manager) {
                 if (vectoren[x][y] < 0) {
                     var val = Math.floor(((vectoren[x][y]) * -1) * 255 / (lowestZ * -1));
                     ctx.fillStyle = 'rgb(0,' + val + ',0)';
-                    ctx.fillRect(x * (64/vectoren.length), y * (64/vectoren.length), 1, 1);
+                    ctx.fillRect(x * (128 / vectoren.length), y * (128 / vectoren.length), 1, 1);
                 } else {
                     var val = Math.floor((vectoren[x][y]) * 255 / height);
                     ctx.fillStyle = 'rgb(' + val + ',' + val + ',' + val + ')';
-                    ctx.fillRect(x * (64/vectoren.length), y * (64/vectoren.length), 1, 1);
+                    ctx.fillRect(x * (128 / vectoren.length), y * (128 / vectoren.length), 1, 1);
                 }
             }
         }
+        //DRAW PLANE
+        setInterval($.proxy(function() {
+            var c = document.getElementsByClassName('heightmap_overlay')[0];
+            var ctx = c.getContext("2d");
+            ctx.clearRect(0,0,128,128);
+            ctx.fillStyle = 'rgb(255,0,0)';
+            ctx.fillRect((this.manager.plane.position.x*(128/6400))+64,(this.manager.plane.position.y*(128/6400))+64,2,2);
+            if((this.manager.plane.position.x*(128/6400))+64 > 128 || (this.manager.plane.position.y*(128/6400))+64 > 128){
+                ctx.strokeStyle = 'red';
+                ctx.rect(1,1,127,127);
+                ctx.stroke();
+            }
+        }, this), 50);
 
     };
 
     //DRAW PLANE
+<<<<<<< HEAD
     setInterval($.proxy(function() {
 //		console.log(this.manager.plane);
     }, this), 50);
+=======
+//    setInterval($.proxy(function() {
+//        console.log(this.manager.plane);
+//    }, this), 50);
+>>>>>>> 2900a98fa521f854864bcebda21db2ea5c5341ae
     
 	//Cube mapping
 	var urls = ["images/posx.png", "images/negx.png",
