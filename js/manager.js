@@ -85,7 +85,7 @@ function Manager(){
 			this.objects[i].step(dt);
 		}
 		
-		if(this.plane){
+		/*if(this.plane){
 			this.attMeter.width = this.attMeter.width;
 			this.attMeter.horizon.width = this.attMeter.horizon.width;
 			var ctx = this.attMeter.horizon.ctx;
@@ -136,7 +136,7 @@ function Manager(){
 			ctx.globalCompositeOperation = 'source-over';
 			this.attMeter.ctx.drawImage(this.attMeter.horizon, 0, 0);
 			this.attMeter.ctx.drawImage(this.attMeter.overlay, 0, 0);
-		}
+		}*/
 	}
 }
 
