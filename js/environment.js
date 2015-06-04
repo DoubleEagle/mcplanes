@@ -1,5 +1,5 @@
 function Environment(manager) {
-    //ENIGE WOLK IN HET SPEL
+    //ONLY CLOUD IN THE GAME
     manager.load('models/cloud.json', function(geometry) {
         var material = new THREE.MeshPhongMaterial(
                 {color: 0xFFFFFF, transparent: true, opacity: 0.5, specular: 0xFFFFFF, shininess: 8}
