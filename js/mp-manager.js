@@ -49,14 +49,14 @@ function MpManager(plane, manager){
 	}, this));
 	
 	setInterval($.proxy(function(){
-		this.socket.emit('data', this.plane.output());
+		this.socket.emit('data', {plane: this.plane.output()});
 	}, this), 50);
 	
 	this.socket.on('data', $.proxy(function(data){
-		data = data.data;
-		for(var i in data){
-			if(this.planes[data[i].id] != undefined){
-				this.planes[data[i].id].input(data[i].data);
+		planes = data.planes;
+		for(var i in planes){
+			if(this.planes[planes[i].id] != undefined){
+				this.planes[planes[i].id].input(planes[i].data);
 			}
 		}
 	}, this));

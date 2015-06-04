@@ -8,6 +8,7 @@ function Vector(x,y,z){
 	this.copy = copy;
 	this.toThree = toThree;
 	this.getLength = getLength;
+	this.normalize = normalize;
 	
 	function add(vector){
 		this.x += vector.x;
@@ -40,5 +41,11 @@ function Vector(x,y,z){
 	
 	function getLength(){
 		return Math.pow(this.x * this.x + this.y * this.y + this.z * this.z, .5);
+	}
+	
+	function normalize(){
+		if(this.getLength != 0){
+			return new Vector(this.x/this.getLength(), this.y/this.getLength(), this.z/this.getLength());
+		}
 	}
 }

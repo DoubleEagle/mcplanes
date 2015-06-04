@@ -33,16 +33,16 @@ io.sockets.on('connection', function(socket){
 	});
 	
 	socket.on('data', function(data){
-		players[socket.client.conn.id].data = data;
+		players[socket.client.conn.id].data = data.plane;
 	});
 });
 
 setInterval(function(){
-	var data = [];
+	var planes = [];
 	for(var i in players){
-		data.push({id: i, data: players[i].data});
+		planes.push({id: i, data: players[i].data});
 	}
-	io.sockets.emit('data', {data: data});
+	io.sockets.emit('data', {planes: planes});
 }, 50);
 
 setInterval(playerList, 2500);
