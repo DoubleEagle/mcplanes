@@ -65,14 +65,23 @@ function Environment(manager) {
                 if (vectoren[x][y] < 0) {
                     var val = Math.floor(((vectoren[x][y]) * -1) * 255 / (lowestZ * -1));
                     ctx.fillStyle = 'rgb(0,' + val + ',0)';
-                    ctx.fillRect(x * (64/vectoren.length), y * (64/vectoren.length), 1, 1);
+                    ctx.fillRect(x * (64 / vectoren.length), y * (64 / vectoren.length), 1, 1);
                 } else {
                     var val = Math.floor((vectoren[x][y]) * 255 / height);
                     ctx.fillStyle = 'rgb(' + val + ',' + val + ',' + val + ')';
-                    ctx.fillRect(x * (64/vectoren.length), y * (64/vectoren.length), 1, 1);
+                    ctx.fillRect(x * (64 / vectoren.length), y * (64 / vectoren.length), 1, 1);
                 }
             }
         }
+        //DRAW PLANE
+        setInterval($.proxy(function() {
+            var c = document.getElementsByClassName('heightmap_overlay')[0];
+            var ctx = c.getContext("2d");
+//            ctx.clearRect(64,64,0,0);
+//            console.log(this.manager.plane.position);
+            ctx.fillStyle = 'rgb(255,0,0)';
+            ctx.fillRect(this.manager.plane.position.x * (64 / vectoren.length), this.manager.plane.position.y * (64 / vectoren.length), 2, 2);
+        }, this), 50);
 
     };
 
