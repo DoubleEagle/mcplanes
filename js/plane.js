@@ -1,9 +1,9 @@
 function Plane(plane, camera){
-	this.position = new Vector(-200,-200,500);
+	this.position = new Vector(0,0,300);
 	this.speed = new Vector(0,0,0);
 	this.direction = {
-		pitch: new Vector(.5*Math.pow(2, .5),-.5*Math.pow(2, .5),0),
-		roll: new Vector(.5*Math.pow(2, .5),.5*Math.pow(2, .5),0),
+		pitch: new Vector(1,0,0),
+		roll: new Vector(0,1,0),
 		yaw: new Vector(0,0,1)
 	};
 	this.direction.pitch.name = 'pitch';
@@ -16,13 +16,13 @@ function Plane(plane, camera){
 	this.a = -10;
 	this.b = 3;
 	this.plane.material.materials[1].opacity = .2;
-	this.g = new Vector(0,0,-9.81);
+	this.g = new Vector(0,0,-9.80665);
 	this.lift = new Vector(0,0,0);
 	this.verticalLift = new Vector(0,0,0);
-	this.maxthrust = 20;
-	this.cl = 1;
-	this.cvl = .08;
-	this.cd = .01;
+	this.maxthrust = 10;
+	this.cl = .1;
+	this.cvl = .008;
+	this.cd = .001;
 	this.main = false;
 	this.flareleft = new THREE.Vector3(0,0,0);
 	this.flareright = new THREE.Vector3(0,0,0);
@@ -81,12 +81,12 @@ function Plane(plane, camera){
 	});
 	this.geometryright = new THREE.Geometry();
 	this.geometryleft = new THREE.Geometry();
-	for(i=0; i<200; i++){
+	for(i=0; i<300; i++){
 		this.geometryright.vertices.push(
-			new THREE.Vector3(this.position.x,this.position.y,this.position.z)
+			new THREE.Vector3(0,0,0)
 		);
 		this.geometryleft.vertices.push(
-			new THREE.Vector3(this.position.x,this.position.y,this.position.z)
+			new THREE.Vector3(0,0,0)
 		);
 	};
 	var lineright = new THREE.Line(this.geometryright, material);
@@ -218,9 +218,9 @@ function Plane(plane, camera){
 		
 		//sliders
 		if (this.main){
-		$('.slider-left').css('top', Math.round( 70 - this.direction.roll.z * 20)+'%');
-		$('.slider-right').css('top', Math.round( 70 - this.direction.roll.z * 20)+'%');
-		$('.slider-top').css('left', Math.round( 50 - this.direction.pitch.z * 20)+'%');
+			$('.slider-left').css('top', Math.round( 70 - this.direction.roll.z * 20)+'%');
+			$('.slider-right').css('top', Math.round( 70 - this.direction.roll.z * 20)+'%');
+			$('.slider-top').css('left', Math.round( 50 - this.direction.pitch.z * 20)+'%');
 		};
 		
 		if(this.main){console.log(
