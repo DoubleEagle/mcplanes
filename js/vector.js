@@ -48,7 +48,6 @@ function Vector(x,y,z){
 			return new Vector(this.x/this.getLength(), this.y/this.getLength(), this.z/this.getLength());
 		}
 		else{
-			console.log(this);
 			return this;
 		}
 	}
