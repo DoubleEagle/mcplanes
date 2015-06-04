@@ -47,9 +47,9 @@ function Environment(manager) {
                     
                 } else {
                     console.log(lowestZ);
-                    var blue = Math.floor(((vectoren[x][y])) * 255 / (lowestZ));
-                    var red = Math.floor(100 + vectoren[x][y] * 155 / lowestZ);
-                    var green = Math.floor(55 + vectoren[x][y] * 200 / lowestZ);
+                    var blue = Math.floor(((vectoren[x][y])) * 255 / (heighestZ));
+                    var red = Math.floor(100 + vectoren[x][y] * 155 / heighestZ);
+                    var green = Math.floor(55 + vectoren[x][y] * 200 / heighestZ);
 
                     geometry.colors.push(new THREE.Color('rgb(' + red + ',' + green + ',' + blue + ')'));
                     console.log(vectoren[x][y]);
