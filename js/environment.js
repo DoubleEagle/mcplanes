@@ -108,7 +108,7 @@ function Environment(manager) {
 			})
 		);
 	}
-	this.skybox = new THREE.Mesh( new THREE.CubeGeometry(1000, 1000, 1000), new THREE.MeshFaceMaterial( materials));
+	this.skybox = new THREE.Mesh( new THREE.CubeGeometry(5000, 5000, 5000), new THREE.MeshFaceMaterial( materials));
 	this.manager.scene.add( this.skybox );
 	this.step = function(step){
 		if(manager.plane){
