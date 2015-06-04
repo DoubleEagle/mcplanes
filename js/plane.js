@@ -21,7 +21,7 @@ function Plane(plane, camera){
 	this.verticalLift = new Vector(0,0,0);
 	this.maxthrust = 10;
 	this.cl = .1;
-	this.cvl = .008;
+	this.cvl = .05;
 	this.cd = .0001;
 	this.main = false;
 	this.flareleft = new THREE.Vector3(0,0,0);
@@ -147,6 +147,8 @@ function Plane(plane, camera){
 		
 		this.verticalLift = this.direction.pitch.clone().multiply(Math.pow(this.speed.getLength(), 2)*Math.sin(Math.acos(this.speed.clone().normalize().x * this.direction.pitch.x + this.speed.clone().normalize().y * this.direction.pitch.y + this.speed.clone().normalize().z * this.direction.pitch.z)-Math.PI/2)*this.pressure*this.cvl);
 		
+		// rotate(this.direction.roll, this.direction.pitch, -this.verticalLift.clone().getLength()/10*step/1000);
+		
 		if(this.position.z < this.zeroThrustAltitude){
 			this.thrust = this.direction.roll.clone().multiply(this.maxthrust*this.throttle*(1-this.position.z/this.zeroThrustAltitude));
 		}
@@ -196,10 +198,10 @@ function Plane(plane, camera){
 					"altitude (m):   " + Math.round((this.position.z)*100)/100 + "<br>" +
 					"throttle (%):   " + Math.round(this.throttle * 10000)/100 + "<br>" +
 					"horizontal speed (m/s):   " + (Math.round(Math.pow(this.speed.x * this.speed.x + this.speed.y * this.speed.y, .5)*100)/100) + "<br>" +
-					"vertical speed (m/s):   " + (Math.round(this.speed.z*100)/100) + '<br />' +
+					"vertical speed (m/s):   " + (Math.round(this.speed.z*100)/100) + '<br>' +
 					"position (m):   ("+Math.round(this.position.x)+', '+Math.round(this.position.y)+', '+Math.round(this.position.z)+')' + "<br>" +
-					"G-force (g):   " + Math.round(this.fres.getLength()/9.81*100)/100 + "<br>" +
-					"Max G-force (g):   " + Math.round(this.fresmax/9.81*100)/100 + "<br>" +
+					"g-force (g):   " + Math.round(this.fres.getLength()/9.81*100)/100 + "<br>" +
+					"Max g-force (g):   " + Math.round(this.fresmax/9.81*100)/100 + "<br>" +
 					"Max speed (m/s):   " + Math.round(this.speedmax*100)/100
 				);
 			}
@@ -218,9 +220,9 @@ function Plane(plane, camera){
 		
 		//sliders
 		if (this.main){
-			$('.slider-left').css('top', Math.round( 70 - this.direction.roll.z * 20)+'%');
-			$('.slider-right').css('top', Math.round( 70 - this.direction.roll.z * 20)+'%');
-			$('.slider-top').css('left', Math.round( 50 - this.direction.pitch.z * 20)+'%');
+			$('.slider-left').css('top', Math.round( 70 + this.direction.roll.z * 20)+'%');
+			$('.slider-right').css('top', Math.round( 70 + this.direction.roll.z * 20)+'%');
+			$('.slider-top').css('left', Math.round( 50 + this.direction.pitch.z * 20)+'%');
 		};
 		
 		if(this.main){console.log(
@@ -244,7 +246,7 @@ function Plane(plane, camera){
 			// this.speed.clone().normalize().x * this.direction.roll.x + this.speed.clone().normalize().y * this.direction.roll.y + this.speed.clone().normalize().z * this.direction.roll.z
 			// this.direction.roll
 			// (Math.acos(this.speed.clone().normalize().x * this.direction.yaw.x + this.speed.clone().normalize().y * this.direction.yaw.y + this.speed.clone().normalize().z * this.direction.yaw.z)-Math.PI/2)*180/Math.PI
-			
+			// (this.verticalLift.clone().normalize().x * this.direction.roll.x + this.verticalLift.clone().normalize().y * this.direction.roll.y + this.verticalLift.clone().normalize().z * this.direction.roll.z)
 		)};
 	};
 	
