@@ -40,22 +40,22 @@ canvas .game{
     color: #8888FF;
 }
 .heightmap {
-    width: 256px;
-    height: 256px;
-    border: 1px solid #AAAAAA;
-    left: 170px;
-    position: absolute;
-    top: 20px;
-    z-index: 100;
-}
-.heightmap .overlay {
     width: 128px;
     height: 128px;
     border: 1px solid #AAAAAA;
     left: 170px;
     position: absolute;
     top: 20px;
-    z-index: 100;
+    z-index: 200;
+}
+.heightmap_overlay {
+    width: 128px;
+    height: 128px;
+    border: 1px solid #AAAAAA;
+    left: 170px;
+    position: absolute;
+    top: 20px;
+    z-index: 300;
 }
 .att-meter{
 	position: absolute;
