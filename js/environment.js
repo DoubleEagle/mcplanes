@@ -76,7 +76,6 @@ function Environment(manager) {
                 geometry.faces.push(face);
             }
         }
-        console.log(indices);
         geometry.computeBoundingSphere();
         geometry.computeFaceNormals();
         //Uncomment for smooth mountains
