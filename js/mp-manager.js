@@ -52,13 +52,17 @@ function MpManager(plane, manager){
 		this.socket.emit('data', {plane: this.plane.output()});
 	}, this), 50);
 	
-	this.socket.on('data', $.proxy(function(data){
+	this.socket.on('plane-data', $.proxy(function(data){
 		planes = data.planes;
 		for(var i in planes){
 			if(this.planes[planes[i].id] != undefined){
 				this.planes[planes[i].id].input(planes[i].data);
 			}
 		}
+	}, this));
+	
+	this.socket.on('env-data', $.proxy(function(data){
+		this.manager.environment.input(data.environment);
 	}, this));
 }
 

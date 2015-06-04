@@ -1,5 +1,6 @@
 var app = require('http').createServer(handler)
-  , io = require('socket.io').listen(app);
+  , io = require('socket.io').listen(app),
+  env = require('./node_modules/terrainGeneration.js');
 
 app.listen(8080);
 
@@ -9,12 +10,15 @@ function handler(req, res){}
 
 players = [];
 
+var environment = env.vectorenGeneration(8);
+
 io.sockets.on('connection', function(socket){
 	socket.on('join', function(data){
 		players[socket.client.conn.id] = data;
 		players[socket.client.conn.id].id = socket.client.conn.id;
 		
 		socket.emit('settings', {id: socket.client.conn.id});
+		socket.emit('env-data', {environment: environment});
 		
 		playerList();
 		
@@ -42,7 +46,7 @@ setInterval(function(){
 	for(var i in players){
 		planes.push({id: i, data: players[i].data});
 	}
-	io.sockets.emit('data', {planes: planes});
+	io.sockets.emit('plane-data', {planes: planes});
 }, 50);
 
 setInterval(playerList, 2500);
