@@ -5,11 +5,18 @@ function Manager(){
 
 	this.objects = [];
 	
+	this.attMeter = $('.att-meter')[0];
+	this.attMeter.ctx = this.attMeter.getContext('2d');
+	this.attMeter.horizon = $('.att-meter .horizon')[0];
+	this.attMeter.horizon.ctx = this.attMeter.horizon.getContext('2d');
+	this.attMeter.overlay = $('.att-meter .overlay')[0];
+	
 	this.init3d();
 	
 	this.environment = new Environment(this);
 	
 	this.lastDate = new Date();
+	
 	
 	function load(file, callback){
 		var loader = new THREE.JSONLoader(1);
@@ -29,7 +36,7 @@ function Manager(){
 
 		this.renderer = new THREE.WebGLRenderer();
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
-		document.body.appendChild($(this.renderer.domElement).addClass('game')[0]);
+		$('body').prepend($(this.renderer.domElement).addClass('game')[0]);
 		
 		$(window).resize(function(){
 			$('.game').attr({width: window.innerWidth, height: window.innerHeight});
@@ -48,7 +55,7 @@ function Manager(){
 				var mesh = new THREE.Mesh(geometry, material);
 				mesh.modelName = modelName;
 				this.scene.add(mesh);
-				var plane = new Plane(mesh, this.camera);
+				var plane = this.plane = new Plane(mesh, this.camera);
 				plane.main = true;
 				this.objects.push(plane);
 				this.mpManager = new MpManager(plane, this);
@@ -76,6 +83,63 @@ function Manager(){
 		
 		for(var i in this.objects){
 			this.objects[i].step(dt);
+		}
+		
+		if(this.plane){
+			this.attMeter.width = this.attMeter.width;
+			this.attMeter.horizon.width = this.attMeter.horizon.width;
+			var ctx = this.attMeter.horizon.ctx;
+			ctx.fillStyle = '#FFCC88';
+			ctx.fillRect(0, 0, 64, 64);
+			ctx.fillStyle = '#8888FF';
+			ctx.beginPath();
+			var angle = Math.asin(this.plane.direction.pitch.z);
+			var corner1 = {x:32 - Math.cos(angle)*96, y: 32 + this.plane.direction.roll.z*32 - this.plane.direction.pitch.z*96};
+			var corner2 = {x:32 + Math.cos(angle)*96, y: 32 + this.plane.direction.roll.z*32 + this.plane.direction.pitch.z*96};
+			var middle = 32 + this.plane.direction.roll.z*32;
+			ctx.moveTo(corner1.x, corner1.y);
+			ctx.lineTo(corner2.x, corner2.y);
+			if(corner2.x > 32){
+				if(middle+(corner2.y-middle)/(corner2.x-32)*32 > 64){
+					ctx.lineTo(64, 64);
+				}
+				if(middle+(corner2.y-middle)/(corner2.x-32)*32 > 0){
+					ctx.lineTo(64, 0);
+				}
+				if(middle-(corner2.y-middle)/(corner2.x-32)*32 > 0){
+					ctx.lineTo(0, 0);
+				}
+				if(middle-(corner2.y-middle)/(corner2.x-32)*32 > 64){
+					ctx.lineTo(0, 64);
+				}
+			}
+			if(corner2.x < 32){
+				if(middle+(corner2.y-middle)/(32-corner2.x)*32 < 0){
+					console.log(0, 0);
+					ctx.lineTo(0, 0);
+				}
+				if(middle+(corner2.y-middle)/(32-corner2.x)*32 < 64){
+					console.log(0, 64);
+					ctx.lineTo(0, 64);
+				}
+				if(middle-(corner2.y-middle)/(32-corner2.x)*32 < 64){
+					console.log(64, 64);
+					ctx.lineTo(64, 64);
+				}
+				if(middle-(corner2.y-middle)/(32-corner2.x)*32 < 0){
+					console.log(64, 0);
+					ctx.lineTo(64, 0);
+				}
+			}
+			ctx.fill();
+			/*ctx.closePath();
+			ctx.globalCompositeOperation = 'destination-atop';
+			ctx.beginPath();
+			ctx.arc(32, 32, 28, 0, Math.PI*2, true);
+			ctx.fill();
+			ctx.globalCompositeOperation = 'source-over';*/
+			this.attMeter.ctx.drawImage(this.attMeter.horizon, 0, 0);
+			//this.attMeter.ctx.drawImage(this.attMeter.overlay, 0, 0);
 		}
 	}
 }

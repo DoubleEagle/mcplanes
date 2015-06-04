@@ -48,3 +48,8 @@ canvas .game{
     top: 20px;
     z-index: 100;
 }
+.att-meter{
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+}
