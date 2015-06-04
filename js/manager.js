@@ -64,13 +64,17 @@ function Manager(){
 			}, this)
 		);
 		
-		var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
+		var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 		directionalLight.position.set( -1, 1, 1 );
 		this.scene.add(directionalLight);
 		
-		var directionalLight = new THREE.DirectionalLight( 0xffffff, .3 );
+		var directionalLight = new THREE.DirectionalLight(0xffffff, .3);
 		directionalLight.position.set( 1, -1, -1 );
 		this.scene.add(directionalLight);
+		this.render();
+		
+		var ambientLight = new THREE.AmbientLight(0x404040);
+		this.scene.add(ambientLight);
 		this.render();
 	}
 	
