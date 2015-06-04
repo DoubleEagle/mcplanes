@@ -44,8 +44,12 @@ function Vector(x,y,z){
 	}
 	
 	function normalize(){
-		if(this.getLength != 0){
+		if(this.getLength() != 0){
 			return new Vector(this.x/this.getLength(), this.y/this.getLength(), this.z/this.getLength());
+		}
+		else{
+			console.log(this);
+			return this;
 		}
 	}
 }
