@@ -8,7 +8,7 @@ function Environment(manager) {
         manager.scene.add(mesh);
 
     });
-
+    this.manager = manager;
     //TERRAIN GENERATION AND HEIGHTMAP
     this.input = function(vectoren) {
         var normal = new THREE.Vector3(0, 1, 0);
@@ -23,17 +23,17 @@ function Environment(manager) {
         for (var x = 0; x < vectoren.length; x++) {
             indices[x] = [];
             for (var y = 0; y < vectoren[x].length; y++) {
-                if(vectoren[x][y] < lowestZ){
+                if (vectoren[x][y] < lowestZ) {
                     lowestZ = vectoren[x][y];
                 }
-                if(vectoren[x][y] > heighestZ){
+                if (vectoren[x][y] > heighestZ) {
                     heighestZ = vectoren[x][y];
                 }
                 indices[x][y] = geometry.vertices.length;
                 geometry.vertices.push(new THREE.Vector3(x * scale, y * scale, vectoren[x][y]));
             }
         }
-        for (var x = 0; x < vectoren.length; x++) {
+        for (var x = 0; x < vectoren.length - 1; x++) {
             for (var y = 0; y < vectoren[x].length - 1; y++) {
                 var val = Math.floor((vectoren[x][y] + vectoren[x + 1][y] + vectoren[x][y + 1] + 1000) / 2000 * 255);
                 geometry.faces.push(new THREE.Face3(indices[x][y], indices[x + 1][y], indices[x][y + 1]));
@@ -60,9 +60,15 @@ function Environment(manager) {
         var height = heighestZ - lowestZ;
         for (x in vectoren) {
             for (y in vectoren[x]) {
-                var val = Math.floor(vectoren[x][y]*255/height);
-                ctx.fillStyle = 'rgb(' + val + ',' + val + ',' + val + ')';
-                ctx.fillRect(x / 4, y / 4, 1, 1);
+                if (vectoren[x][y] < 0) {
+                    var val = Math.floor(((vectoren[x][y]) * -1) * 255 / (lowestZ * -1));
+                    ctx.fillStyle = 'rgb(0,' + val + ',0)';
+                    ctx.fillRect(x / 4, y / 4, 1, 1);
+                } else {
+                    var val = Math.floor((vectoren[x][y] + height) * 255 / height);
+                    ctx.fillStyle = 'rgb(' + val + ',' + val + ',' + val + ')';
+                    ctx.fillRect(x / 4, y / 4, 1, 1);
+                }
             }
         }
 
