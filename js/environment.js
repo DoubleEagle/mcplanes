@@ -11,51 +11,51 @@ function Environment(manager) {
     this.manager = manager;
 	var banner = $('.banners').append('<p class="banner">Loading environment...</p>');
     //TERRAIN GENERATION AND HEIGHTMAP
-    this.input = function(vectoren) {
+    this.input = function(vectors) {
         var normal = new THREE.Vector3(0, 1, 0);
         var color = new THREE.Color(0xffaa00);
         var face = new THREE.Face3(0, 1, 2, normal, color, 0);
-        scale = 6400 / (vectoren.length - 1);
+        scale = 6400 / (vectors.length - 1);
         var geometry = new THREE.Geometry();
         var indices = [];
         var colors = [];
         var heighestZ = 0;
         var lowestZ = 0;
 
-        for (var x = 0; x < vectoren.length; x++) {
-            for (var y = 0; y < vectoren.length; y++) {
-                if (vectoren[x][y] < lowestZ) {
-                    lowestZ = vectoren[x][y];
+        for (var x = 0; x < vectors.length; x++) {
+            for (var y = 0; y < vectors.length; y++) {
+                if (vectors[x][y] < lowestZ) {
+                    lowestZ = vectors[x][y];
                 }
-                if (vectoren[x][y] > heighestZ) {
-                    heighestZ = vectoren[x][y];
+                if (vectors[x][y] > heighestZ) {
+                    heighestZ = vectors[x][y];
                 }
             }
         }
-        for (var x = 0; x < vectoren.length; x++) {
+        for (var x = 0; x < vectors.length; x++) {
             indices[x] = [];
-            for (var y = 0; y < vectoren[x].length; y++) {
+            for (var y = 0; y < vectors[x].length; y++) {
 
                 indices[x][y] = geometry.vertices.length;
-                geometry.vertices.push(new THREE.Vector3(x * scale, y * scale, vectoren[x][y]));
+                geometry.vertices.push(new THREE.Vector3(x * scale, y * scale, vectors[x][y]));
 //                geometry.colors.push(new THREE.Color(0x00ff00));
-                if (vectoren[x][y] < 0) {
-                    var red = Math.floor(100 - ((vectoren[x][y] * -1) * 100 / (lowestZ * -1)));
-                    var green = Math.floor((vectoren[x][y] * -1) * 200 / (lowestZ * -1) + 55);
-                    var val = Math.floor(((vectoren[x][y]) * -1) * 255 / (lowestZ * -1));
+                if (vectors[x][y] < 0) {
+                    var red = Math.floor(100 - ((vectors[x][y] * -1) * 100 / (lowestZ * -1)));
+                    var green = Math.floor((vectors[x][y] * -1) * 200 / (lowestZ * -1) + 55);
+                    var val = Math.floor(((vectors[x][y]) * -1) * 255 / (lowestZ * -1));
                     geometry.colors.push(new THREE.Color('rgb(' + red + ',' + green + ',0)'));
                     
                 } else {
-                    var blue = Math.floor(((vectoren[x][y])) * 255 / (heighestZ));
-                    var red = Math.floor(100 + vectoren[x][y] * 155 / heighestZ);
-                    var green = Math.floor(55 + vectoren[x][y] * 200 / heighestZ);
+                    var blue = Math.floor(((vectors[x][y])) * 255 / (heighestZ));
+                    var red = Math.floor(100 + vectors[x][y] * 155 / heighestZ);
+                    var green = Math.floor(55 + vectors[x][y] * 200 / heighestZ);
                     geometry.colors.push(new THREE.Color('rgb(' + red + ',' + green + ',' + blue + ')'));
                 }
             }
         }
-        for (var x = 0; x < vectoren.length - 1; x++) {
-            for (var y = 0; y < vectoren[x].length - 1; y++) {
-                var val = Math.floor((vectoren[x][y] + vectoren[x + 1][y] + vectoren[x][y + 1] + 1000) / 2000 * 255);
+        for (var x = 0; x < vectors.length - 1; x++) {
+            for (var y = 0; y < vectors[x].length - 1; y++) {
+                var val = Math.floor((vectors[x][y] + vectors[x + 1][y] + vectors[x][y + 1] + 1000) / 2000 * 255);
                 var face = new THREE.Face3(indices[x][y], indices[x + 1][y], indices[x][y + 1]);
                 face.vertexColors.push(geometry.colors[indices[x][y]]);
                 face.vertexColors.push(geometry.colors[indices[x + 1][y]]);
@@ -64,9 +64,9 @@ function Environment(manager) {
             }
         }
 
-        for (var x = 1; x < vectoren.length; x++) {
-            for (var y = 1; y < vectoren[x].length; y++) {
-                var val = Math.floor((vectoren[x][y] + vectoren[x - 1][y] + vectoren[x][y - 1] + 1000) / 2000 * 255);
+        for (var x = 1; x < vectors.length; x++) {
+            for (var y = 1; y < vectors[x].length; y++) {
+                var val = Math.floor((vectors[x][y] + vectors[x - 1][y] + vectors[x][y - 1] + 1000) / 2000 * 255);
                 var face = new THREE.Face3(indices[x][y], indices[x - 1][y], indices[x][y - 1]);
                 face.vertexColors.push(geometry.colors[indices[x][y]]);
                 face.vertexColors.push(geometry.colors[indices[x - 1][y]]);
@@ -87,16 +87,16 @@ function Environment(manager) {
         var c = document.getElementsByClassName('heightmap')[0];
         var ctx = c.getContext("2d");
         var height = heighestZ - lowestZ;
-        for (x in vectoren) {
-            for (y in vectoren[x]) {
-                if (vectoren[x][y] < 0) {
-                    var val = Math.floor(((vectoren[x][y]) * -1) * 255 / (lowestZ * -1));
+        for (x in vectors) {
+            for (y in vectors[x]) {
+                if (vectors[x][y] < 0) {
+                    var val = Math.floor(((vectors[x][y]) * -1) * 255 / (lowestZ * -1));
                     ctx.fillStyle = 'rgb(0,' + val + ',0)';
-                    ctx.fillRect(x * (128 / vectoren.length), y * (128 / vectoren.length), 1, 1);
+                    ctx.fillRect(x * (128 / vectors.length), y * (128 / vectors.length), 1, 1);
                 } else {
-                    var val = Math.floor((vectoren[x][y]) * 255 / height);
+                    var val = Math.floor((vectors[x][y]) * 255 / height);
                     ctx.fillStyle = 'rgb(' + val + ',' + val + ',' + val + ')';
-                    ctx.fillRect(x * (128 / vectoren.length), y * (128 / vectoren.length), 1, 1);
+                    ctx.fillRect(x * (128 / vectors.length), y * (128 / vectors.length), 1, 1);
                 }
             }
         }
