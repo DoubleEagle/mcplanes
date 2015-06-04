@@ -78,7 +78,7 @@ function Environment(manager) {
             var c = document.getElementsByClassName('heightmap_overlay')[0];
             var ctx = c.getContext("2d");
 //            ctx.clearRect(64,64,0,0);
-//            console.log(this.manager.plane.position);
+            console.log(this.manager.plane.position);
             ctx.fillStyle = 'rgb(255,0,0)';
             ctx.fillRect(this.manager.plane.position.x * (64 / vectoren.length), this.manager.plane.position.y * (64 / vectoren.length), 2, 2);
         }, this), 50);
@@ -86,9 +86,9 @@ function Environment(manager) {
     };
 
     //DRAW PLANE
-    setInterval($.proxy(function() {
-        console.log(this.manager.plane);
-    }, this), 50);
+//    setInterval($.proxy(function() {
+//        console.log(this.manager.plane);
+//    }, this), 50);
     
     //Cube mapping
     //  var urls = ["images/posx.png", "images/negx.png",
