@@ -41,7 +41,7 @@ function Environment(manager) {
 //                geometry.colors.push(new THREE.Color(0x00ff00));
                 if (vectors[x][y] < 0) {
                     var red = Math.floor(100 - ((vectors[x][y] * -1) * 100 / (lowestZ * -1)));
-                    var green = Math.floor((vectors[x][y] * -1) * 200 / (lowestZ * -1) + 55);
+                    var green = Math.floor((vectors[x][y] * -1) * 45 / (lowestZ * -1) + 55);
                     var val = Math.floor(((vectors[x][y]) * -1) * 255 / (lowestZ * -1));
                     geometry.colors.push(new THREE.Color('rgb(' + red + ',' + green + ',0)'));
                     
