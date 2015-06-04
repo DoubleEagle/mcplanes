@@ -115,19 +115,15 @@ function Manager(){
 			}
 			if(corner2.x < 32){
 				if(middle+(corner2.y-middle)/(32-corner2.x)*32 < 0){
-					console.log(0, 0);
 					ctx.lineTo(0, 0);
 				}
 				if(middle+(corner2.y-middle)/(32-corner2.x)*32 < 64){
-					console.log(0, 64);
 					ctx.lineTo(0, 64);
 				}
 				if(middle-(corner2.y-middle)/(32-corner2.x)*32 < 64){
-					console.log(64, 64);
 					ctx.lineTo(64, 64);
 				}
 				if(middle-(corner2.y-middle)/(32-corner2.x)*32 < 0){
-					console.log(64, 0);
 					ctx.lineTo(64, 0);
 				}
 			}
