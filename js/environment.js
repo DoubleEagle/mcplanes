@@ -31,6 +31,13 @@ function Environment(manager) {
                 }
                 indices[x][y] = geometry.vertices.length;
                 geometry.vertices.push(new THREE.Vector3(x * scale, y * scale, vectoren[x][y]));
+                if (vectoren[x][y] < 0) {
+                    var val = Math.floor(((vectoren[x][y]) * -1) * 255 / (lowestZ * -1));
+                    geometry.colors.push(new THREE.Color('rgb(0,' + val + ',0)'));
+                } else {
+                    var val = Math.floor(((vectoren[x][y])) * 255 / (lowestZ));
+                    geometry.colors.push(new THREE.Color('rgb(' + val + ',0,0)'));
+                }
             }
         }
         for (var x = 0; x < vectoren.length - 1; x++) {
@@ -77,12 +84,12 @@ function Environment(manager) {
         setInterval($.proxy(function() {
             var c = document.getElementsByClassName('heightmap_overlay')[0];
             var ctx = c.getContext("2d");
-            ctx.clearRect(0,0,128,128);
+            ctx.clearRect(0, 0, 128, 128);
             ctx.fillStyle = 'rgb(255,0,0)';
-            ctx.fillRect((this.manager.plane.position.x*(128/6400))+64,(this.manager.plane.position.y*(128/6400))+64,2,2);
-            if((this.manager.plane.position.x*(128/6400))+64 > 128 || (this.manager.plane.position.y*(128/6400))+64 > 128){
+            ctx.fillRect((this.manager.plane.position.x * (128 / 6400)) + 64, (this.manager.plane.position.y * (128 / 6400)) + 64, 2, 2);
+            if ((this.manager.plane.position.x * (128 / 6400)) + 64 > 128 || (this.manager.plane.position.y * (128 / 6400)) + 64 > 128 || (this.manager.plane.position.x * (128 / 6400)) + 64 < 0 || (this.manager.plane.position.y * (128 / 6400)) + 64 < 0) {
                 ctx.strokeStyle = 'red';
-                ctx.rect(1,1,127,127);
+                ctx.rect(1, 1, 127, 127);
                 ctx.stroke();
             }
         }, this), 50);
