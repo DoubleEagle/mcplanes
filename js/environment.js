@@ -9,7 +9,7 @@ function Environment(manager) {
 
     });
 
-    //TERRAIN GENERATION AND HIGHTMAP
+    //TERRAIN GENERATION AND HEIGHTMAP
     this.input = function(vectoren) {
         var normal = new THREE.Vector3(0, 1, 0);
         var color = new THREE.Color(0xffaa00);
@@ -17,10 +17,18 @@ function Environment(manager) {
         scale = 1600 / (vectoren.length - 1);
         var geometry = new THREE.Geometry();
         var indices = [];
+        var heighestZ = 0;
+        var lowestZ = 0;
 
         for (var x = 0; x < vectoren.length; x++) {
             indices[x] = [];
             for (var y = 0; y < vectoren[x].length; y++) {
+                if(vectoren[x][y] < lowestZ){
+                    lowestZ = vectoren[x][y];
+                }
+                if(vectoren[x][y] > heighestZ){
+                    heighestZ = vectoren[x][y];
+                }
                 indices[x][y] = geometry.vertices.length;
                 geometry.vertices.push(new THREE.Vector3(x * scale, y * scale, vectoren[x][y]));
             }
@@ -46,5 +54,17 @@ function Environment(manager) {
 //        geometry.computeVertexNormals();
         var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial());
         manager.scene.add(mesh);
-    }
+
+        var c = document.getElementsByClassName('heightmap')[0];
+        var ctx = c.getContext("2d");
+        var height = heighestZ - lowestZ;
+        for (x in vectoren) {
+            for (y in vectoren[x]) {
+                var val = Math.floor(vectoren[x][y]*255/height);
+                ctx.fillStyle = 'rgb(' + val + ',' + val + ',' + val + ')';
+                ctx.fillRect(x / 4, y / 4, 1, 1);
+            }
+        }
+
+    };
 }
