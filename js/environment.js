@@ -35,14 +35,14 @@ function Environment(manager) {
         }
         for (var x = 0; x < vectoren.length; x++) {
             for (var y = 0; y < vectoren[x].length - 1; y++) {
-//                var val = Math.floor((vectoren[x][y] + vectoren[x + 1][y] + vectoren[x][y + 1] + 1000) / 2000 * 255);
+                var val = Math.floor((vectoren[x][y] + vectoren[x + 1][y] + vectoren[x][y + 1] + 1000) / 2000 * 255);
                 geometry.faces.push(new THREE.Face3(indices[x][y], indices[x + 1][y], indices[x][y + 1]));
             }
         }
 
         for (var x = 1; x < vectoren.length; x++) {
             for (var y = 1; y < vectoren[x].length; y++) {
-//                var val = Math.floor((vectoren[x][y] + vectoren[x - 1][y] + vectoren[x][y - 1] + 1000) / 2000 * 255);
+                var val = Math.floor((vectoren[x][y] + vectoren[x - 1][y] + vectoren[x][y - 1] + 1000) / 2000 * 255);
                 geometry.faces.push(new THREE.Face3(indices[x][y], indices[x - 1][y], indices[x][y - 1]));
             }
         }
