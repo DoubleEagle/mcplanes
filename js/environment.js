@@ -17,42 +17,71 @@ function Environment(manager) {
         scale = 6400 / (vectoren.length - 1);
         var geometry = new THREE.Geometry();
         var indices = [];
+        var colors = [];
         var heighestZ = 0;
         var lowestZ = 0;
 
         for (var x = 0; x < vectoren.length; x++) {
-            indices[x] = [];
-            for (var y = 0; y < vectoren[x].length; y++) {
+            for (var y = 0; y < vectoren.length; y++) {
                 if (vectoren[x][y] < lowestZ) {
                     lowestZ = vectoren[x][y];
                 }
                 if (vectoren[x][y] > heighestZ) {
                     heighestZ = vectoren[x][y];
                 }
+            }
+        }
+        for (var x = 0; x < vectoren.length; x++) {
+            indices[x] = [];
+            for (var y = 0; y < vectoren[x].length; y++) {
+
                 indices[x][y] = geometry.vertices.length;
                 geometry.vertices.push(new THREE.Vector3(x * scale, y * scale, vectoren[x][y]));
+//                geometry.colors.push(new THREE.Color(0x00ff00));
+                if (vectoren[x][y] < 0) {
+                    console.log(lowestZ);
+                    var red = Math.floor(100 - ((vectoren[x][y] * -1) * 100 / (lowestZ * -1)));
+                    var green = Math.floor((vectoren[x][y] * -1) * 200 / (lowestZ * -1) + 55);
+                    var val = Math.floor(((vectoren[x][y]) * -1) * 255 / (lowestZ * -1));
+                    geometry.colors.push(new THREE.Color('rgb(' + red + ',' + green + ',0)'));
+                    console.log(vectoren[x][y]);
+                    console.log('rgb(' + red + ',' + green + ',0)');
+                } else {
+                    var blue = Math.floor(((vectoren[x][y])) * 255 / (lowestZ));
+                    var red = Math.floor(100 + vectoren[x][y]*155/lowestZ);
+                    var green = Math.floor(55 + vectoren[x][y]*200/lowestZ);
+                    
+                    geometry.colors.push(new THREE.Color('rgb(' + val + ',0,0)'));
+                }
             }
         }
         for (var x = 0; x < vectoren.length - 1; x++) {
             for (var y = 0; y < vectoren[x].length - 1; y++) {
                 var val = Math.floor((vectoren[x][y] + vectoren[x + 1][y] + vectoren[x][y + 1] + 1000) / 2000 * 255);
-                geometry.faces.push(new THREE.Face3(indices[x][y], indices[x + 1][y], indices[x][y + 1]));
+                var face = new THREE.Face3(indices[x][y], indices[x + 1][y], indices[x][y + 1]);
+                face.vertexColors.push(geometry.colors[indices[x][y]]);
+                face.vertexColors.push(geometry.colors[indices[x + 1][y]]);
+                face.vertexColors.push(geometry.colors[indices[x][y + 1]]);
+                geometry.faces.push(face);
             }
         }
 
         for (var x = 1; x < vectoren.length; x++) {
             for (var y = 1; y < vectoren[x].length; y++) {
                 var val = Math.floor((vectoren[x][y] + vectoren[x - 1][y] + vectoren[x][y - 1] + 1000) / 2000 * 255);
-                geometry.faces.push(new THREE.Face3(indices[x][y], indices[x - 1][y], indices[x][y - 1]));
+                var face = new THREE.Face3(indices[x][y], indices[x - 1][y], indices[x][y - 1]);
+                face.vertexColors.push(geometry.colors[indices[x][y]]);
+                face.vertexColors.push(geometry.colors[indices[x - 1][y]]);
+                face.vertexColors.push(geometry.colors[indices[x][y - 1]]);
+                geometry.faces.push(face);
             }
         }
-        console.log(indices);
         geometry.computeBoundingSphere();
         geometry.computeFaceNormals();
         //Uncomment for smooth mountains
 //        geometry.mergeVertices();
 //        geometry.computeVertexNormals();
-        var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial());
+        var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({vertexColors: THREE.VertexColors}));
         mesh.position.x = -3200;
         mesh.position.y = -3200;
         manager.scene.add(mesh);
@@ -77,12 +106,12 @@ function Environment(manager) {
         setInterval($.proxy(function() {
             var c = document.getElementsByClassName('heightmap_overlay')[0];
             var ctx = c.getContext("2d");
-            ctx.clearRect(0,0,128,128);
+            ctx.clearRect(0, 0, 128, 128);
             ctx.fillStyle = 'rgb(255,0,0)';
-            ctx.fillRect((this.manager.plane.position.x*(128/6400))+64,(this.manager.plane.position.y*(128/6400))+64,2,2);
-            if((this.manager.plane.position.x*(128/6400))+64 > 128 || (this.manager.plane.position.y*(128/6400))+64 > 128){
+            ctx.fillRect(Math.round((this.manager.plane.position.x * (128 / 6400)) + 64), Math.round((this.manager.plane.position.y * (128 / 6400)) + 64), 2, 2);
+            if ((this.manager.plane.position.x * (128 / 6400)) + 64 > 128 || (this.manager.plane.position.y * (128 / 6400)) + 64 > 128 || (this.manager.plane.position.x * (128 / 6400)) + 64 < 0 || (this.manager.plane.position.y * (128 / 6400)) + 64 < 0) {
                 ctx.strokeStyle = 'red';
-                ctx.rect(1,1,127,127);
+                ctx.rect(1, 1, 127, 127);
                 ctx.stroke();
             }
         }, this), 50);
