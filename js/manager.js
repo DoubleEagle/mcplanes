@@ -39,9 +39,10 @@ function Manager(){
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 		$('body').prepend($(this.renderer.domElement).addClass('game')[0]);
 		
-		$(window).resize(function(){
+		$(window).resize($.proxy(function(){
 			$('.game').attr({width: window.innerWidth, height: window.innerHeight});
-		});
+			this.renderer.setSize( window.innerWidth, window.innerHeight );
+		}, this));
 		
 		//objects here
 
