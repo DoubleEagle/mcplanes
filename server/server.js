@@ -10,7 +10,7 @@ function handler(req, res){}
 
 players = [];
 
-var environment = env.vectorenGeneration(8);
+var environment = env.vectorenGeneration(10);
 
 io.sockets.on('connection', function(socket){
 	socket.on('join', function(data){

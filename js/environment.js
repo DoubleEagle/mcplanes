@@ -14,7 +14,7 @@ function Environment(manager) {
         var normal = new THREE.Vector3(0, 1, 0);
         var color = new THREE.Color(0xffaa00);
         var face = new THREE.Face3(0, 1, 2, normal, color, 0);
-        scale = 1600 / (vectoren.length - 1);
+        scale = 6400 / (vectoren.length - 1);
         var geometry = new THREE.Geometry();
         var indices = [];
         var heighestZ = 0;
@@ -53,6 +53,8 @@ function Environment(manager) {
 //        geometry.mergeVertices();
 //        geometry.computeVertexNormals();
         var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial());
+        mesh.position.x = -3200;
+        mesh.position.y = -3200;
         manager.scene.add(mesh);
 
         var c = document.getElementsByClassName('heightmap')[0];
@@ -63,14 +65,19 @@ function Environment(manager) {
                 if (vectoren[x][y] < 0) {
                     var val = Math.floor(((vectoren[x][y]) * -1) * 255 / (lowestZ * -1));
                     ctx.fillStyle = 'rgb(0,' + val + ',0)';
-                    ctx.fillRect(x / 4, y / 4, 1, 1);
+                    ctx.fillRect(x * (64/vectoren.length), y * (64/vectoren.length), 1, 1);
                 } else {
-                    var val = Math.floor((vectoren[x][y] + height) * 255 / height);
+                    var val = Math.floor((vectoren[x][y]) * 255 / height);
                     ctx.fillStyle = 'rgb(' + val + ',' + val + ',' + val + ')';
-                    ctx.fillRect(x / 4, y / 4, 1, 1);
+                    ctx.fillRect(x * (64/vectoren.length), y * (64/vectoren.length), 1, 1);
                 }
             }
         }
 
     };
+
+    //DRAW PLANE
+    setInterval($.proxy(function() {
+        console.log(this.manager.plane);
+    }, this), 50);
 }
