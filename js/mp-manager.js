@@ -89,7 +89,8 @@ function createName(){
 		'sauce',
 		'air',
 		'ham',
-		'thunder'
+		'thunder',
+		'brain'
 	];
 	var third = [
 		'fly',
