@@ -8,8 +8,23 @@ function Environment(manager) {
         manager.scene.add(mesh);
 
     });
+	// feel free to add more loading hints, copy this: ,'<p class="banner"></p>'
+	this.loadingHints = [
+		 '<p class="banner">Making sense...</p>'
+		,'<p class="banner">Adding pepper and salt...</p>'
+		,'<p class="banner">Inventing more loading hints...</p>'
+		,'<p class="banner">Abusing physics...</p>'
+		,'<p class="banner">Trying to reach space...</p>'
+		,'<p class="banner">Assigning stupid names...</p>'
+		,'<p class="banner">Rendering flying fish...</p>'
+		,'<p class="banner">Getting a drink with taste...</p>'
+		,'<p class="banner">Eating syrup waffles...</p>'
+		,'<p class="banner">Going back in time...</p>'
+		,'<p class="banner">Making pizza soup...</p>'
+	];
+	
     this.manager = manager;
-	var banner = $('.banners').append('<p class="banner">Loading environment...</p>');
+	var banner = $('.banners').append(this.loadingHints[Math.floor(Math.random()*this.loadingHints.length)]);
     //TERRAIN GENERATION AND HEIGHTMAP
     this.input = function(vectors) {
         var normal = new THREE.Vector3(0, 1, 0);
