@@ -21,15 +21,18 @@ function Environment(manager) {
 		,'<p class="banner">Going back in time...</p>'
 		,'<p class="banner">Making pizza soup...</p>'
 	];
+	this.vectors = [];
+	this.scale = 1;
 	
 	this.manager = manager;
 	var banner = $('.banners').append(this.loadingHints[Math.floor(Math.random()*this.loadingHints.length)]);
 	// TERRAIN GENERATION AND HEIGHTMAP
 	this.input = function(vectors) {
+		this.vectors = vectors;
 		var normal = new THREE.Vector3(0, 1, 0);
 		var color = new THREE.Color(0xffaa00);
 		var face = new THREE.Face3(0, 1, 2, normal, color, 0);
-		scale = 6400 / (vectors.length - 1);
+		scale = this.scale = 6400 / (vectors.length - 1);
 		var geometry = new THREE.Geometry();
 		var indices = [];
 		var colors = [];

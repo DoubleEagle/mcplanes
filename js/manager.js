@@ -57,7 +57,7 @@ function Manager(){
 				var mesh = new THREE.Mesh(geometry, material);
 				mesh.modelName = modelName;
 				this.scene.add(mesh);
-				var plane = this.plane = new Plane(mesh, this.camera);
+				var plane = this.plane = new Plane(mesh, this.camera, this.environment);
 				plane.main = true;
 				this.objects.push(plane);
 				this.mpManager = new MpManager(plane, this);
