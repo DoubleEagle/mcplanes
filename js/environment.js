@@ -92,10 +92,15 @@ function Environment(manager) {
 		}
 		geometry.computeBoundingSphere();
 		geometry.computeFaceNormals();
-		// Uncomment for smooth mountains
-		// geometry.mergeVertices();
-		// geometry.computeVertexNormals();
-		var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({vertexColors: THREE.VertexColors}));
+		// (Un)comment to toggle smooth mountains
+		geometry.mergeVertices();
+		// (Un)comment to toggle smooth mountains
+		geometry.computeVertexNormals();
+		
+		var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({vertexColors: THREE.VertexColors
+			// (Un)comment to toggle smooth mountains
+			, shading: THREE.SmoothShading
+		}));
 		mesh.position.x = -3200;
 		mesh.position.y = -3200;
 		manager.scene.add(mesh);

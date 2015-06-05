@@ -1,4 +1,4 @@
-function Plane(plane, camera){
+function Plane(plane, camera, environment){
 	this.position = new Vector(0,0,300);
 	this.speed = new Vector(0,0,0);
 	this.direction = {
@@ -36,6 +36,7 @@ function Plane(plane, camera){
 	this.zeroThrustAltitude = 18000;
 	this.p0 = 1;
 	this.scaleHeight = 7640;
+	this.environment = environment;
 	
 	function rotate(v1, v2, angle){
 		t1 = v1.clone();
@@ -92,6 +93,8 @@ function Plane(plane, camera){
 		if(step > 50){
 			step = 50;
 		}
+		if(this.environment.vectors[Math.round((this.position.x+3200)/this.environment.scale)] && this.position.z < this.environment.vectors[Math.round((this.position.x+3200)/this.environment.scale)][Math.round((this.position.y+3200)/this.environment.scale)]){console.log("You're dead!")};
+		
 		//pitch
 		if(this.pressed[87]){
 			rotate(this.direction.roll, this.direction.yaw, -this.pitchAuthority*step/1000);
@@ -141,8 +144,6 @@ function Plane(plane, camera){
 		
 		this.verticalLift = this.direction.pitch.clone().multiply(Math.pow(this.speed.getLength(), 2)*Math.sin(Math.acos(this.speed.clone().normalize().x * this.direction.pitch.x + this.speed.clone().normalize().y * this.direction.pitch.y + this.speed.clone().normalize().z * this.direction.pitch.z)-Math.PI/2)*this.pressure*this.cvl);
 		
-		// this.roll.add(this.verticalLift.clone()).normalize();
-		// this.pitch.add(this.verticalLift.clone()).normalize();
 		// rotate(this.direction.roll, this.direction.pitch, (Math.acos(this.speed.clone().normalize().x * this.direction.pitch.x + this.speed.clone().normalize().y * this.direction.pitch.y + this.speed.clone().normalize().z * this.direction.pitch.z)-Math.PI/2)*step/1000);
 		
 		// rotate(this.direction.yaw, this.direction.roll, (Math.acos(this.speed.clone().normalize().x * this.direction.yaw.x + this.speed.clone().normalize().y * this.direction.yaw.y + this.speed.clone().normalize().z * this.direction.yaw.z)-Math.PI/2)*step/1000);
@@ -246,6 +247,7 @@ function Plane(plane, camera){
 			// (Math.acos(this.speed.clone().normalize().x * this.direction.yaw.x + this.speed.clone().normalize().y * this.direction.yaw.y + this.speed.clone().normalize().z * this.direction.yaw.z)-Math.PI/2)*180/Math.PI
 			// (this.verticalLift.clone().normalize().x * this.direction.roll.x + this.verticalLift.clone().normalize().y * this.direction.roll.y + this.verticalLift.clone().normalize().z * this.direction.roll.z)
 			// "vertical aoa:",(Math.acos(this.speed.clone().normalize().x * this.direction.pitch.x + this.speed.clone().normalize().y * this.direction.pitch.y + this.speed.clone().normalize().z * this.direction.pitch.z)-Math.PI/2)*180/Math.PI
+			// Math.round((this.position.x+3200)/this.environment.scale)
 		)};
 	};
 	
