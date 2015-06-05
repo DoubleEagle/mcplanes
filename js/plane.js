@@ -50,7 +50,7 @@ function Plane(plane, camera){
 		}
 		if(this.plane.modelName == 'models/plane02.2.json'){
 			return this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree();
-		}	
+		}
 	};
 	this.calcflareleft = function(){
 		if(this.plane.modelName == 'models/plane01.json'){
@@ -143,7 +143,9 @@ function Plane(plane, camera){
 		
 		// this.roll.add(this.verticalLift.clone()).normalize();
 		// this.pitch.add(this.verticalLift.clone()).normalize();
-		// rotate(this.direction.roll, this.direction.pitch, -this.verticalLift.clone().getLength()/10*step/1000);
+		// rotate(this.direction.roll, this.direction.pitch, (Math.acos(this.speed.clone().normalize().x * this.direction.pitch.x + this.speed.clone().normalize().y * this.direction.pitch.y + this.speed.clone().normalize().z * this.direction.pitch.z)-Math.PI/2)*step/1000);
+		
+		// rotate(this.direction.yaw, this.direction.roll, (Math.acos(this.speed.clone().normalize().x * this.direction.yaw.x + this.speed.clone().normalize().y * this.direction.yaw.y + this.speed.clone().normalize().z * this.direction.yaw.z)-Math.PI/2)*step/1000);
 		
 		if(this.position.z < this.zeroThrustAltitude){
 			this.thrust = this.direction.roll.clone().multiply(this.maxthrust*this.throttle*(1-this.position.z/this.zeroThrustAltitude));
@@ -175,7 +177,6 @@ function Plane(plane, camera){
 		}
 
 		this.camera.rotation.setEulerFromRotationMatrix(camRotation, 'XYZ');
-		this.counter += 1;
 		
 		if(this.fres.clone().getLength() > this.fresmax){
 			this.fresmax = this.fres.clone().getLength();
@@ -185,20 +186,21 @@ function Plane(plane, camera){
 			this.speedmax = this.speed.clone().getLength();
 		};
 		
+		this.counter += 1;
 		if(this.counter == 4){
 			this.counter = 0;
 			if(this.main){
 				$("div.info").html(
-					"fps:   " + Math.round(100000/step)/100 + "<br>" +
-					"airspeed (m/s):   " + Math.round(this.speed.getLength()*100)/100 + "<br>" +
-					"altitude (m):   " + Math.round((this.position.z)*100)/100 + "<br>" +
-					"throttle (%):   " + Math.round(this.throttle * 10000)/100 + "<br>" +
+					"fps: " + Math.round(100000/step)/100 + "<br>" +
+					"airspeed (m/s): " + Math.round(this.speed.getLength()*100)/100 + "<br>" +
+					"altitude (m): " + Math.round((this.position.z)*100)/100 + "<br>" +
+					"throttle (%): " + Math.round(this.throttle * 10000)/100 + "<br>" +
 					"horizontal speed (m/s):   " + (Math.round(Math.pow(this.speed.x * this.speed.x + this.speed.y * this.speed.y, .5)*100)/100) + "<br>" +
 					"vertical speed (m/s):   " + (Math.round(this.speed.z*100)/100) + '<br>' +
-					"position (m):   ("+Math.round(this.position.x)+', '+Math.round(this.position.y)+', '+Math.round(this.position.z)+')' + "<br>" +
-					"g-force (g):   " + Math.round(this.fres.getLength()/9.81*100)/100 + "<br>" +
-					"Max g-force (g):   " + Math.round(this.fresmax/9.81*100)/100 + "<br>" +
-					"Max speed (m/s):   " + Math.round(this.speedmax*100)/100
+					"position (m): ("+Math.round(this.position.x)+', '+Math.round(this.position.y)+', '+Math.round(this.position.z)+')' + "<br>" +
+					"g-force (g): " + Math.round(this.fres.getLength()/9.81*100)/100 + "<br>" +
+					"Max g-force (g): " + Math.round(this.fresmax/9.81*100)/100 + "<br>" +
+					"Max speed (m/s): " + Math.round(this.speedmax*100)/100
 				);
 			}
 		}
@@ -243,6 +245,7 @@ function Plane(plane, camera){
 			// this.direction.roll
 			// (Math.acos(this.speed.clone().normalize().x * this.direction.yaw.x + this.speed.clone().normalize().y * this.direction.yaw.y + this.speed.clone().normalize().z * this.direction.yaw.z)-Math.PI/2)*180/Math.PI
 			// (this.verticalLift.clone().normalize().x * this.direction.roll.x + this.verticalLift.clone().normalize().y * this.direction.roll.y + this.verticalLift.clone().normalize().z * this.direction.roll.z)
+			// "vertical aoa:",(Math.acos(this.speed.clone().normalize().x * this.direction.pitch.x + this.speed.clone().normalize().y * this.direction.pitch.y + this.speed.clone().normalize().z * this.direction.pitch.z)-Math.PI/2)*180/Math.PI
 		)};
 	};
 	
@@ -257,11 +260,6 @@ function Plane(plane, camera){
 	}
 	
 	this.input = function(data){
-//		var geometryright = new THREE.Geometry();
-//		var geometryleft = new THREE.Geometry();
-//		geometryright.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-//		geometryleft.vertices.push(this.position.clone().add(this.direction.pitch.clone().multiply(-3.6).add(this.direction.roll.clone().multiply(-2.2))).toThree());
-		
 		if(data != undefined){
 			for(var i in data.direction){
 				for(var j in data.direction[i]){
@@ -277,19 +275,5 @@ function Plane(plane, camera){
 			this.pressed = data.pressed;
 			this.throttle = data.throttle;
 		}
-		
-//		this.geometryright.vertices.push(calcflareright());
-//		this.geometryleft.vertices.push(calcflareleft());
-//		this.geometryright.verticesNeedUpdate = true;
-//		this.geometryleft.verticesNeedUpdate = true;
-//		var lineright = new THREE.Line(geometryright, material);
-//		var lineleft = new THREE.Line(geometryleft, material);
-//		manager.scene.add(lineright);
-//		manager.scene.add(lineleft);
-//		this.lines.push(lineright);		
-//		this.lines.push(lineleft);
-//		while(this.lines.length > 500){
-//			manager.scene.remove(this.lines.shift());
-//		};
 	}
 };
