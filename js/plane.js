@@ -24,8 +24,6 @@ function Plane(plane, camera){
 	this.cvl = .05;
 	this.cd = .0001;
 	this.main = false;
-	this.flareleft = new THREE.Vector3(0,0,0);
-	this.flareright = new THREE.Vector3(0,0,0);
 	this.pitchAuthority = 1;
 	this.rollAuthority = 2;
 	this.yawAuthority = .2;
@@ -82,13 +80,9 @@ function Plane(plane, camera){
 	this.geometryright = new THREE.Geometry();
 	this.geometryleft = new THREE.Geometry();
 	for(i=0; i<300; i++){
-		this.geometryright.vertices.push(
-			new THREE.Vector3(0,0,0)
-		);
-		this.geometryleft.vertices.push(
-			new THREE.Vector3(0,0,0)
-		);
-	};
+		this.geometryright.vertices.push(this.calcflareright());
+		this.geometryleft.vertices.push(this.calcflareleft());
+	}
 	var lineright = new THREE.Line(this.geometryright, material);
 	var lineleft = new THREE.Line(this.geometryleft, material);
 	manager.scene.add(lineright);
