@@ -1,5 +1,11 @@
 function MpManager(plane, manager){
-	this.socket = io.connect('192.168.0.20:8080');
+	var ip = window.location.hostname;
+	var port = '81';
+	if(window.location.hostname == 'localhost'){
+		// change this for local server testing
+		ip = '85.151.128.10';
+	}
+	this.socket = io.connect(ip + ':' + port);
 	
 	this.socket.emit('join', {name: prompt('Please enter your name', createName())});
 	this.settings = {};
